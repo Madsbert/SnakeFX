@@ -57,14 +57,14 @@ public class GameMap extends Pane {
     }
 
     private void spawnSnake() {
-        SnakeHead snakeHead = new SnakeHead(Direction.Left, 1,250,250,Color.RED);
+        snakeHead = new SnakeHead(Direction.Left, 1,250,250,Color.RED);
         this.getChildren().add(snakeHead.getNode());
         isRunning = true;
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.setAutoReverse(false);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5),
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.3),
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
