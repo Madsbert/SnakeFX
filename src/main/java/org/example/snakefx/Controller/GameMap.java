@@ -95,6 +95,9 @@ public class GameMap extends Pane {
         snakeHead.tick();
         snakeHead.move(GameMap.UNIT_SIZE);
         freeToMove = true;
+
+        System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
+
     }
 
     private void spawnFood(int fruitsToSpawn) {
