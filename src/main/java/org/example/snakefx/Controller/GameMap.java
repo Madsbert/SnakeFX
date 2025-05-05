@@ -135,6 +135,7 @@ public class GameMap extends Pane {
                 if (existingFood.getPositionX() == food.getPositionX() && existingFood.getPositionY() == food.getPositionY()) {
                     positionOccupied = true;
                     System.out.println("Double Fruit Spawn prevented");
+                    spawnFood(1);
                     break;
                 }
             }
@@ -143,6 +144,7 @@ public class GameMap extends Pane {
                 if (snakePart.getX() == food.getPositionX() && snakePart.getY() == food.getPositionY()) {
                     positionOccupied = true;
                     System.out.println("Spawn on snake prevented");
+                    spawnFood(1);
                     break;
                 }
             }
@@ -185,7 +187,7 @@ public class GameMap extends Pane {
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(3);
-                    spawnFood(1);
+                    spawnFood(2);
 
                     // replaces gamespeed
                     timeline.stop();
