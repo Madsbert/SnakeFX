@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.snakefx.Model.Direction;
+import org.example.snakefx.Model.GameTime;
 import org.example.snakefx.Model.Score;
 import org.example.snakefx.Model.Foods.Apple;
 import org.example.snakefx.Model.Foods.Banana;
@@ -23,8 +24,8 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GameMap extends Pane {
-    static final int SCREEN_WIDTH = 800;
-    static final int SCREEN_HEIGHT = 800;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 800;
     public static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * UNIT_SIZE) / UNIT_SIZE;
     final int[] x = new int[GAME_UNITS];
@@ -35,8 +36,7 @@ public class GameMap extends Pane {
     int fruitsToSpawn = 3;
     public boolean freeToMove = true;
     private Score score;
-
-    Timeline timeline;
+    private GameTime gameTime;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -79,6 +79,7 @@ public class GameMap extends Pane {
         timeline.getKeyFrames().add(keyFrame);
 
         timeline.play();
+        initGameSpeedText();
     }
 
 
@@ -89,13 +90,16 @@ public class GameMap extends Pane {
 
     }
 
-    private void update()
+    public void update()
     {
         snakeHead.tick();
         snakeHead.move();
         checkIfSnakeIsOnTopOfFoodAndIsHellaHungry();
         freeToMove = true;
 
+        gameTime.tick();
+        System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
+        Runtime.getRuntime().gc();
     }
 
     private void spawnFood(int fruitsToSpawn) {
@@ -128,6 +132,7 @@ public class GameMap extends Pane {
           }
         foods.add(food);
         spawnFood(fruitsToSpawn - 1);
+
         }
 
     public void setSnakeDirection(Direction direction) {
@@ -140,6 +145,12 @@ public class GameMap extends Pane {
         score = new Score(snakeHead.getLengthOfSnake()-3);
         this.getChildren().add(score.getNode());
     }
+
+    public void initGameSpeedText() {
+        gameTime = new GameTime(this);
+        this.getChildren().add(gameTime.getNode());
+    }
+}
 
     public void checkIfSnakeIsOnTopOfFoodAndIsHellaHungry() {
         int sx = snakeHead.getSnakeHeadPositionX();

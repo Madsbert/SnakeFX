@@ -30,7 +30,7 @@ public class SnakeHead {
         this.snakeHeadPositionX = x;
         this.snakeHeadPositionY = y;
 
-        Image snakeImage = new Image(getClass().getResourceAsStream("/Pictures/Snakehead.png"));
+        Image snakeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/Snakehead.png")));
         this.snakehead = new ImageView(snakeImage);
         this.snakehead.setFitWidth(snakeSize);
         this.snakehead.setFitHeight(snakeSize);
@@ -86,6 +86,19 @@ public class SnakeHead {
                 break;
         }
 
+        // Death upon hitting tail
+        for (SnakePart snakePart : snakeParts) {
+            if (snakePart.getX() == snakeHeadPositionX && snakePart.getY() == snakeHeadPositionY) {
+                Runtime.getRuntime().exit(0);
+            }
+        }
+
+        // Death upon leaving grid area
+        if ((snakeHeadPositionX >= GameMap.SCREEN_WIDTH || snakeHeadPositionY >= GameMap.SCREEN_HEIGHT)
+        || (snakeHeadPositionX < 0 || snakeHeadPositionY < 0)) {
+            Runtime.getRuntime().exit(0);
+        }
+
         // Sæt ny position
         snakehead.setX(snakeHeadPositionX);
         snakehead.setY(snakeHeadPositionY);
@@ -102,6 +115,7 @@ public class SnakeHead {
             if (!snakeParts.get(i).alive)
             {
                 snakeParts.remove(i);
+                i--;
             }
         }
     }
