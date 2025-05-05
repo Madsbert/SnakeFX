@@ -10,9 +10,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.snakefx.Model.Direction;
+import org.example.snakefx.Model.Foods.Apple;
+import org.example.snakefx.Model.Foods.Banana;
+import org.example.snakefx.Model.Foods.Dragonfruit;
+import org.example.snakefx.Model.Foods.Food;
 import org.example.snakefx.Model.SnakeHead;
 
 import java.util.List;
+import java.util.Random;
 
 public class GameMap extends Pane {
     static final int SCREEN_WIDTH = 800;
@@ -23,6 +28,8 @@ public class GameMap extends Pane {
     final int[] y = new int[GAME_UNITS];
     boolean isRunning = false;
     private SnakeHead snakeHead;
+    private Food food;
+    int fruitsToSpawn = 3;
     public boolean freeToMove = true;
 
     Timeline timeline;
@@ -54,9 +61,10 @@ public class GameMap extends Pane {
     }
 
     public void startGame() {
+        isRunning = true;
         draw();
-        spawnFood();
         spawnSnake();
+        spawnFood(fruitsToSpawn);
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -75,7 +83,7 @@ public class GameMap extends Pane {
         snakeHead = new SnakeHead(Direction.Left, 3,250,250,Color.RED);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
-        isRunning = true;
+
     }
 
     private void update()
@@ -85,9 +93,38 @@ public class GameMap extends Pane {
         freeToMove = true;
     }
 
-    private void spawnFood() {
-        // Implementation for spawning food
-    }
+    private void spawnFood(int fruitsToSpawn) {
+        Random random = new Random();
+
+        // Base case: Stop recursion if no more fruits needed or game isn't running
+        if (!isRunning || fruitsToSpawn <= 0) {
+            return;
+        }
+
+        int chance = random.nextInt((100)+1);
+
+          if (chance <= 67) {
+              food = new Apple(
+                      random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE,
+                      random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE);
+              this.getChildren().add(food.getImage());
+          }
+          else if (chance <= 90) {
+              food = new Banana(
+                      random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE,
+                      random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE);
+              this.getChildren().add(food.getImage());
+          }
+            else {
+              food = new Dragonfruit(
+                      random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE,
+                      random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE);
+              this.getChildren().add(food.getImage());
+          }
+        spawnFood(fruitsToSpawn - 1);
+
+        }
+
     public void setSnakeDirection(Direction direction) {
         if (snakeHead != null) {
             snakeHead.setDirection(direction);
