@@ -4,6 +4,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.snakefx.Controller.GameMap;
 
+/**
+ * a Dragonfruit class
+ */
 public class Dragonfruit extends Food {
     ImageView image;
 
@@ -24,6 +27,10 @@ public class Dragonfruit extends Food {
 
     }
 
+    /**
+     * method to return the imageview
+     * @return an imageview
+     */
     @Override
     public ImageView getImage() {
         return this.image;

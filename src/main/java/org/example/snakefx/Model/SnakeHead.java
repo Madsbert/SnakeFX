@@ -12,6 +12,9 @@ import java.util.List;
 
 import static javafx.scene.paint.Color.RED;
 
+/**
+ * class to create a snakehead and handle its methods
+ */
 public class SnakeHead {
     Direction direction = null;
     int lengthOfSnake;
@@ -41,12 +44,21 @@ public class SnakeHead {
         snakehead.getTransforms().add(rotate);
     }
 
+
+    /**
+     * method to return the imageview
+     * @return an imageview
+     */
     public ImageView getNode(){
         return this.snakehead;
     }
 
     public Direction getDirection() { return direction; }
 
+    /**
+     * method to set the direction and prevent it from impossible movements
+     * @param newDirection the direction the snake is heading
+     */
     public void setDirection(Direction newDirection) {
         if ((this.direction == Direction.Up && newDirection == Direction.Down) ||
                 (this.direction == Direction.Down && newDirection == Direction.Up) ||
@@ -59,13 +71,25 @@ public class SnakeHead {
 
     public void checkCollision() {}
 
+    /**
+     * method to get the x postion
+     * @return x postion of the head
+     */
     public int getSnakeHeadPositionX(){
         return this.snakeHeadPositionX;
     }
+
+    /**
+     * method to get the Y postion
+     * @return Y postion of the head
+     */
     public int getSnakeHeadPositionY(){
         return this.snakeHeadPositionY;
     }
 
+    /**
+     * method to move the snake and rotate and checks for collision and dies
+     */
     public void move() {
         switch (direction) {
             case Up:
@@ -104,6 +128,9 @@ public class SnakeHead {
         snakehead.setY(snakeHeadPositionY);
     }
 
+    /**
+     * method to make the snake longer
+     */
     public void tick()
     {
         SnakePart newPart = new SnakePart(lengthOfSnake,snakeHeadPositionX,snakeHeadPositionY, this);
@@ -120,12 +147,26 @@ public class SnakeHead {
         }
     }
 
+    /**
+     * method to get the snake length
+     * @return length of snake
+     */
     public int getLengthOfSnake() {
         return lengthOfSnake;
     }
+
+    /**
+     * method to add to int length of snake
+     * @param add to the int length of the snake
+     */
     public void addToLengthOfSnake(int add){
         lengthOfSnake += add;
     }
+
+    /**
+     * method to get snake parts
+     * @return list of snakeparts
+     */
     public List<SnakePart> getSnakeParts() {
         return snakeParts;
     }

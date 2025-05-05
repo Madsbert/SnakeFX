@@ -3,6 +3,9 @@ package org.example.snakefx.Model;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * class to have a score
+ */
 public class Score {
     private int score;
     private final Text SCORE_TEXT = new Text();
@@ -19,6 +22,10 @@ public class Score {
         score += 1;
     }
 
+    /**
+     * method to get the Textfield
+     * @return a textfield
+     */
     public Text getNode(){
         return this.SCORE_TEXT;
     }

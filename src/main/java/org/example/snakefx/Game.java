@@ -14,14 +14,24 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.example.snakefx.Model.Direction;
 
+/**
+ * class to take input and launch the game
+ */
 public class Game extends Application {
     private GameMap gameMap;
 
+    /**
+     * launches the game
+     * @param args
+     */
     public static void main(String[] args) {
         launch();
     }
 
-
+    /**
+     * sets the scene
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         gameMap = new GameMap();
@@ -40,6 +50,10 @@ public class Game extends Application {
         gameMap.startGame();
     }
 
+    /**
+     * takes input from keys
+     * @param event
+     */
     private void handleKeyPress(KeyEvent event) {
         if (gameMap.freeToMove)
         {

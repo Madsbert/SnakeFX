@@ -4,6 +4,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.snakefx.Controller.GameMap;
 
+/**
+ * a banana class
+ */
 public class Banana extends Food {
     ImageView image;
     public Banana(int positionX, int positionY) {
@@ -16,10 +19,15 @@ public class Banana extends Food {
         this.image.setY(positionY);
     }
 
+
     @Override
     public void getsEaten() {
     }
 
+    /**
+     * method to return the imageview
+     * @return an imageview
+     */
     @Override
     public ImageView getImage() {
         return this.image;

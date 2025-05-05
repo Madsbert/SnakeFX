@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * class which sets up the game
+ */
 public class GameMap extends Pane {
 
     public static final int SCREEN_WIDTH = 800;
@@ -43,6 +46,9 @@ public class GameMap extends Pane {
         this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
+    /**
+     * draws grid
+     */
     public void draw() {
         gc.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -57,6 +63,9 @@ public class GameMap extends Pane {
         }
     }
 
+    /**
+     * starts the game and initializes necsseray participants and starts timline
+     */
     public void startGame() {
         isRunning = true;
         draw();
@@ -75,7 +84,9 @@ public class GameMap extends Pane {
         initGameSpeedText();
     }
 
-
+    /**
+     * spawns the snake
+     */
     private void spawnSnake() {
         snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10);
         this.getChildren().add(snakeHead.getNode());
@@ -83,6 +94,9 @@ public class GameMap extends Pane {
 
     }
 
+    /**
+     * Mikkel????
+     */
     public void update()
     {
         snakeHead.tick();
@@ -95,6 +109,10 @@ public class GameMap extends Pane {
         Runtime.getRuntime().gc();
     }
 
+    /**
+     *Spawns the food on the map
+     * @param fruitsToSpawn how many fruits that should be on the map
+     */
     private void spawnFood(int fruitsToSpawn) {
         Random random = new Random();
 
@@ -157,21 +175,35 @@ public class GameMap extends Pane {
 
     }
 
+    /**
+     * sets snake direction
+     * @param direction sets snake direction
+     */
     public void setSnakeDirection(Direction direction) {
         if (snakeHead != null) {
             snakeHead.setDirection(direction);
         }
     }
 
+    /**
+     * initializing score text
+     */
     public void initScore() {
         score = new Score(snakeHead.getLengthOfSnake()-3);
         this.getChildren().add(score.getNode());
     }
 
+    /**
+     * initializing game speed text text
+     */
     public void initGameSpeedText() {
         gameTime = new GameTime(this);
         this.getChildren().add(gameTime.getNode());
     }
+
+    /**
+     * method to eat the fruit and changes game speed acording to the fruits eaten
+     */
     public void checkIfSnakeIsOnTopOfFoodAndIsHellaHungry() {
         int sx = snakeHead.getSnakeHeadPositionX();
         int sy = snakeHead.getSnakeHeadPositionY();

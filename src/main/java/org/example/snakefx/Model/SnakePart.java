@@ -9,6 +9,9 @@ import org.example.snakefx.Controller.GameMap;
 
 import java.util.Objects;
 
+/**
+ * class which handles the snakepart
+ */
 public class SnakePart extends ImageView {
     private int lifeTime;
     public boolean alive;
@@ -58,6 +61,9 @@ public class SnakePart extends ImageView {
 
     public void deathOfPart(){}
 
+    /**
+     * removes snakeparts from the lifetime of the snake part has expired
+     */
     public void tick()
     {
         lifeTime--;

@@ -4,6 +4,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.snakefx.Controller.GameMap;
 
+/**
+ * brick class
+ */
 public class Brick extends Food {
     ImageView image;
 
@@ -18,12 +21,15 @@ public class Brick extends Food {
 
     }
 
-
     @Override
     public void getsEaten() {
 
     }
 
+    /**
+     * method to return the imageview
+     * @return an imageview
+     */
     @Override
     public ImageView getImage() {
         return this.image;

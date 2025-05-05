@@ -9,6 +9,9 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.example.snakefx.Controller.GameMap;
 
+/**
+ *class which shows the user how fast the game is moving
+ */
 public class GameTime {
     private Timeline timeline;
     private GameMap gameMap;
@@ -31,6 +34,9 @@ public class GameTime {
         updateTime();
     }
 
+    /**
+     * gets the current gametime
+     */
     private void updateTime() {
         timeline.stop();
         timeline.getKeyFrames().clear();
@@ -58,6 +64,10 @@ public class GameTime {
         TIME_TEXT.setText("GameTime: " + timeModifier * 100 + "%");
     }
 
+    /**
+     * method to get the textfield
+     * @return a textfield
+     */
     public Text getNode(){
         return this.TIME_TEXT;
     }
