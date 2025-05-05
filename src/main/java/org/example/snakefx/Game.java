@@ -41,19 +41,24 @@ public class Game extends Application {
     }
 
     private void handleKeyPress(KeyEvent event) {
-        switch(event.getCode()) {
-            case LEFT:
-                gameMap.setSnakeDirection(Direction.Left);
-                break;
-            case RIGHT:
-                gameMap.setSnakeDirection(Direction.Right);
-                break;
-            case UP:
-                gameMap.setSnakeDirection(Direction.Up);
-                break;
-            case DOWN:
-                gameMap.setSnakeDirection(Direction.Down);
-                break;
+        if (gameMap.freeToMove)
+        {
+            switch(event.getCode()) {
+                case LEFT:
+                    gameMap.setSnakeDirection(Direction.Left);
+                    break;
+                case RIGHT:
+                    gameMap.setSnakeDirection(Direction.Right);
+                    break;
+                case UP:
+                    gameMap.setSnakeDirection(Direction.Up);
+                    break;
+                case DOWN:
+                    gameMap.setSnakeDirection(Direction.Down);
+                    break;
+            }
+
+            gameMap.freeToMove = false;
         }
     }
 

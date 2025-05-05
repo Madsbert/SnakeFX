@@ -1,6 +1,7 @@
 module org.example.snakefx {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens org.example.snakefx to javafx.fxml;

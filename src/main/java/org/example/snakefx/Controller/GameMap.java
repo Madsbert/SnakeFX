@@ -12,15 +12,18 @@ import javafx.util.Duration;
 import org.example.snakefx.Model.Direction;
 import org.example.snakefx.Model.SnakeHead;
 
+import java.util.List;
+
 public class GameMap extends Pane {
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 800;
-    static final int UNIT_SIZE = 25;
+    public static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * UNIT_SIZE) / UNIT_SIZE;
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
     boolean isRunning = false;
     private SnakeHead snakeHead;
+    public boolean freeToMove = true;
 
     Timeline timeline;
 
@@ -54,12 +57,6 @@ public class GameMap extends Pane {
         draw();
         spawnFood();
         spawnSnake();
-    }
-
-    private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 1,250,250,Color.RED);
-        this.getChildren().add(snakeHead.getNode());
-        isRunning = true;
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -68,11 +65,24 @@ public class GameMap extends Pane {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        snakeHead.move(GameMap.UNIT_SIZE);
-
+                        update();
                     }
                 }));
         timeline.play();
+    }
+
+    private void spawnSnake() {
+        snakeHead = new SnakeHead(Direction.Left, 3,250,250,Color.RED);
+        this.getChildren().add(snakeHead.getNode());
+        snakeHead.parent = this;
+        isRunning = true;
+    }
+
+    private void update()
+    {
+        snakeHead.tick();
+        snakeHead.move(GameMap.UNIT_SIZE);
+        freeToMove = true;
     }
 
     private void spawnFood() {
