@@ -87,9 +87,6 @@ public class SnakeHead {
     {
         SnakePart newPart = new SnakePart(lengthOfSnake,snakeHeadPositionX,snakeHeadPositionY, this);
         snakeParts.add(newPart);
-    public int getLengthOfSnake() {
-        return lengthOfSnake;
-    }
 
         for (int i = 0; i < snakeParts.size(); i++) {
             snakeParts.get(i).tick();

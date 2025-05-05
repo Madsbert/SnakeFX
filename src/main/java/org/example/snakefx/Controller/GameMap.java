@@ -60,12 +60,6 @@ public class GameMap extends Pane {
         spawnFood();
         spawnSnake();
         initScore();
-    }
-
-    private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 0,250,250);
-        this.getChildren().add(snakeHead.getNode());
-        isRunning = true;
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -80,8 +74,9 @@ public class GameMap extends Pane {
         timeline.play();
     }
 
+
     private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 3,250,250,Color.RED);
+        snakeHead = new SnakeHead(Direction.Left, 3,250,250);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
         isRunning = true;
