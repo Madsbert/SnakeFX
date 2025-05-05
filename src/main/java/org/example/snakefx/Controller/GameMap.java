@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Random;
 
 public class GameMap extends Pane {
-    static final int SCREEN_WIDTH = 800;
-    static final int SCREEN_HEIGHT = 800;
+    public static final int SCREEN_WIDTH = 800;
+    public static final int SCREEN_HEIGHT = 800;
     public static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * UNIT_SIZE) / UNIT_SIZE;
     final int[] x = new int[GAME_UNITS];
@@ -84,7 +84,7 @@ public class GameMap extends Pane {
 
 
     private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 3,250,250);
+        snakeHead = new SnakeHead(Direction.Left, 10,250,250);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
 

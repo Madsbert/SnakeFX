@@ -3,6 +3,7 @@ package org.example.snakefx.Model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
+import org.example.snakefx.Controller.GameMap;
 
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class SnakeHead {
         this.snakeHeadPositionX = x;
         this.snakeHeadPositionY = y;
 
-        Image snakeImage = new Image(getClass().getResourceAsStream("/Pictures/Snakehead.png"));
+        Image snakeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/Snakehead.png")));
         this.snakehead = new ImageView(snakeImage);
         this.snakehead.setFitWidth(snakeSize);
         this.snakehead.setFitHeight(snakeSize);
@@ -78,6 +79,17 @@ public class SnakeHead {
                 break;
         }
 
+        for (SnakePart snakePart : snakeParts) {
+            if (snakePart.getX() == snakeHeadPositionX && snakePart.getY() == snakeHeadPositionY) {
+                Runtime.getRuntime().exit(0);
+            }
+        }
+
+        if ((snakeHeadPositionX >= GameMap.SCREEN_WIDTH || snakeHeadPositionY >= GameMap.SCREEN_HEIGHT)
+        || (snakeHeadPositionX < 0 || snakeHeadPositionY < 0)) {
+            Runtime.getRuntime().exit(0);
+        }
+
         // Sæt ny position
         snakehead.setX(snakeHeadPositionX);
         snakehead.setY(snakeHeadPositionY);
@@ -94,6 +106,7 @@ public class SnakeHead {
             if (!snakeParts.get(i).alive)
             {
                 snakeParts.remove(i);
+                i--;
             }
         }
     }
