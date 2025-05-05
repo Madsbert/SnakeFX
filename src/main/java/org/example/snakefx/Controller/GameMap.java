@@ -2,28 +2,26 @@ package org.example.snakefx.Controller;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.snakefx.Model.Direction;
-import org.example.snakefx.Model.GameTime;
-import org.example.snakefx.Model.Score;
 import org.example.snakefx.Model.Foods.Apple;
 import org.example.snakefx.Model.Foods.Banana;
 import org.example.snakefx.Model.Foods.Dragonfruit;
 import org.example.snakefx.Model.Foods.Food;
+import org.example.snakefx.Model.GameTime;
+import org.example.snakefx.Model.Score;
 import org.example.snakefx.Model.SnakeHead;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class GameMap extends Pane {
+
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 800;
     public static final int UNIT_SIZE = 25;
@@ -37,6 +35,7 @@ public class GameMap extends Pane {
     public boolean freeToMove = true;
     private Score score;
     private GameTime gameTime;
+    private Timeline timeline;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -112,28 +111,28 @@ public class GameMap extends Pane {
         Food food;
         int chance = random.nextInt((100)+1);
 
-          if (chance <= 67) {
-              food = new Apple(
-                      random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                      random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
-              this.getChildren().add(food.getImage());
-          }
-          else if (chance <= 90) {
-              food = new Banana(
-                      random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                      random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
-              this.getChildren().add(food.getImage());
-          }
-            else {
-              food = new Dragonfruit(
-                      random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                      random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
-              this.getChildren().add(food.getImage());
-          }
+        if (chance <= 67) {
+            food = new Apple(
+                    random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                    random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            this.getChildren().add(food.getImage());
+        }
+        else if (chance <= 90) {
+            food = new Banana(
+                    random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                    random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            this.getChildren().add(food.getImage());
+        }
+        else {
+            food = new Dragonfruit(
+                    random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                    random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            this.getChildren().add(food.getImage());
+        }
         foods.add(food);
         spawnFood(fruitsToSpawn - 1);
 
-        }
+    }
 
     public void setSnakeDirection(Direction direction) {
         if (snakeHead != null) {
@@ -150,8 +149,6 @@ public class GameMap extends Pane {
         gameTime = new GameTime(this);
         this.getChildren().add(gameTime.getNode());
     }
-}
-
     public void checkIfSnakeIsOnTopOfFoodAndIsHellaHungry() {
         int sx = snakeHead.getSnakeHeadPositionX();
         int sy = snakeHead.getSnakeHeadPositionY();
@@ -182,14 +179,13 @@ public class GameMap extends Pane {
                 else
                     //remove food in JavaFX
                     getChildren().remove(foods.get(i).getImage());
-                    foods.remove(foods.get(i));
+                foods.remove(foods.get(i));
 
-                    //increase length to snake
-                    snakeHead.addToLengthOfSnake(1);
-                    //spawn new food
-                    spawnFood(fruitsToSpawn - 1);
-                }
+                //increase length to snake
+                snakeHead.addToLengthOfSnake(1);
+                //spawn new food
+                spawnFood(fruitsToSpawn - 1);
             }
         }
     }
-
+}
