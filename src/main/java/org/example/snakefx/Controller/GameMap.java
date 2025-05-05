@@ -97,7 +97,7 @@ public class GameMap extends Pane {
         freeToMove = true;
 
         System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
-
+        Runtime.getRuntime().gc();
     }
 
     private void spawnFood(int fruitsToSpawn) {
