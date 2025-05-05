@@ -2,8 +2,6 @@ package org.example.snakefx.Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
 import java.util.Objects;
@@ -25,7 +23,7 @@ public class SnakeHead {
     public Object parent;
 
 
-    public SnakeHead(Direction direction, int lengthOfSnake, int x, int y, Color snakeheadColor) {
+    public SnakeHead(Direction direction, int lengthOfSnake, int x, int y) {
         this.direction = direction;
         this.lengthOfSnake = lengthOfSnake;
         this.snakeHeadPositionX = x;
@@ -98,6 +96,10 @@ public class SnakeHead {
                 snakeParts.remove(i);
             }
         }
+    }
+
+    public int getLengthOfSnake() {
+        return lengthOfSnake;
     }
 }
 

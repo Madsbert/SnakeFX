@@ -1,11 +1,15 @@
 package org.example.snakefx.Model;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.example.snakefx.Controller.GameMap;
 
-public class SnakePart extends Rectangle {
+import java.util.Objects;
+
+public class SnakePart extends ImageView {
     private int lifeTime;
     public boolean alive;
     public SnakeHead parent;
@@ -14,11 +18,36 @@ public class SnakePart extends Rectangle {
     public SnakePart(int lifeTime, int snakePartPositionX, int snakePartPositionY, SnakeHead parent) {
         this.lifeTime = lifeTime - 1;
         alive = true;
+
+        this.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/SnakeBody.png"))));
+        this.setFitWidth(GameMap.UNIT_SIZE);
+        this.setFitHeight(GameMap.UNIT_SIZE);
+        this.setX(snakePartPositionX);
+        this.setY(snakePartPositionY);
+
+        switch (parent.direction) {
+            case Up:
+                setRotate(180);
+                break;
+            case Down:
+                setRotate(0);
+                break;
+            case Left:
+                setRotate(90);
+                break;
+            case Right:
+                setRotate(270);
+                break;
+        }
+
+        /*
         this.setHeight(GameMap.UNIT_SIZE);
         this.setWidth(GameMap.UNIT_SIZE);
         this.setX(snakePartPositionX);
         this.setY(snakePartPositionY);
         this.setFill(Color.RED);
+
+         */
         this.parent = parent;
 
         if (this.parent.parent != null && this.parent.parent instanceof Pane parentPane) {

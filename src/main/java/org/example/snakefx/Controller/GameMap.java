@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.snakefx.Model.Direction;
+import org.example.snakefx.Model.Score;
 import org.example.snakefx.Model.Foods.Apple;
 import org.example.snakefx.Model.Foods.Banana;
 import org.example.snakefx.Model.Foods.Dragonfruit;
@@ -31,6 +32,7 @@ public class GameMap extends Pane {
     private Food food;
     int fruitsToSpawn = 3;
     public boolean freeToMove = true;
+    private Score score;
 
     Timeline timeline;
 
@@ -65,6 +67,7 @@ public class GameMap extends Pane {
         draw();
         spawnSnake();
         spawnFood(fruitsToSpawn);
+        initScore();
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -79,8 +82,9 @@ public class GameMap extends Pane {
         timeline.play();
     }
 
+
     private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 3,250,250,Color.RED);
+        snakeHead = new SnakeHead(Direction.Left, 3,250,250);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
 
@@ -129,5 +133,10 @@ public class GameMap extends Pane {
         if (snakeHead != null) {
             snakeHead.setDirection(direction);
         }
+    }
+
+    public void initScore() {
+        score = new Score(snakeHead.getLengthOfSnake());
+        this.getChildren().add(score.getNode());
     }
 }
