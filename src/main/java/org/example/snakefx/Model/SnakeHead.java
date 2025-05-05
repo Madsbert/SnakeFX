@@ -3,6 +3,7 @@ package org.example.snakefx.Model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
+import org.example.snakefx.Controller.GameMap;
 
 import java.util.Objects;
 
@@ -58,22 +59,29 @@ public class SnakeHead {
 
     public void checkCollision() {}
 
-    public void move(int unitSize) {
+    public int getSnakeHeadPositionX(){
+        return this.snakeHeadPositionX;
+    }
+    public int getSnakeHeadPositionY(){
+        return this.snakeHeadPositionY;
+    }
+
+    public void move() {
         switch (direction) {
             case Up:
-                snakeHeadPositionY -= unitSize;
+                snakeHeadPositionY -= GameMap.UNIT_SIZE;
                 snakehead.setRotate(180);
                 break;
             case Down:
-                snakeHeadPositionY += unitSize;
+                snakeHeadPositionY += GameMap.UNIT_SIZE;
                 snakehead.setRotate(0);
                 break;
             case Left:
-                snakeHeadPositionX -= unitSize;
+                snakeHeadPositionX -= GameMap.UNIT_SIZE;
                 snakehead.setRotate(90);
                 break;
             case Right:
-                snakeHeadPositionX += unitSize;
+                snakeHeadPositionX += GameMap.UNIT_SIZE;
                 snakehead.setRotate(270);
                 break;
         }
@@ -100,6 +108,9 @@ public class SnakeHead {
 
     public int getLengthOfSnake() {
         return lengthOfSnake;
+    }
+    public void addToLengthOfSnake(int add){
+        lengthOfSnake += add;
     }
 }
 

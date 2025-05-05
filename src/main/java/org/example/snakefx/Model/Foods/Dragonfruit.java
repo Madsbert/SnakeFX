@@ -7,6 +7,7 @@ import org.example.snakefx.Controller.GameMap;
 public class Dragonfruit extends Food {
     ImageView image;
 
+
     public Dragonfruit(int positionX, int positionY) {
         super(positionX, positionY, 100);
         Image dragonImage = new Image(getClass().getResourceAsStream("/Pictures/Dragonfruit.png"));
@@ -15,6 +16,7 @@ public class Dragonfruit extends Food {
         this.image.setFitHeight(GameMap.UNIT_SIZE);
         this.image.setX(positionX);
         this.image.setY(positionY);
+
     }
 
     @Override

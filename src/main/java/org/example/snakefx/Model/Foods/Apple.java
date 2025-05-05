@@ -21,8 +21,11 @@ public class Apple extends Food {
     public ImageView getImage() {
         return this.image;
     }
+
+
     @Override
     public void getsEaten() {
 
     }
+
 }

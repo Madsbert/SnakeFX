@@ -24,4 +24,5 @@ public class Banana extends Food {
     public ImageView getImage() {
         return this.image;
     }
+
 }
