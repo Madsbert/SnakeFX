@@ -2,13 +2,9 @@ package org.example.snakefx.Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
 import java.util.Objects;
-
-import static javafx.scene.paint.Color.RED;
 
 public class SnakeHead {
     Direction direction = null;
@@ -20,7 +16,7 @@ public class SnakeHead {
     private final Rotate rotate;
 
 
-    public SnakeHead(Direction direction, int lengthOfSnake, int x, int y, Color snakeheadColor) {
+    public SnakeHead(Direction direction, int lengthOfSnake, int x, int y) {
         this.direction = direction;
         this.lengthOfSnake = lengthOfSnake;
         this.snakeHeadPositionX = x;
@@ -73,11 +69,15 @@ public class SnakeHead {
                 break;
         }
 
+
         // Sæt ny position
         snakehead.setX(snakeHeadPositionX);
         snakehead.setY(snakeHeadPositionY);
     }
 
+    public int getLengthOfSnake() {
+        return lengthOfSnake;
+    }
 
 }
 

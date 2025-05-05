@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.snakefx.Model.Direction;
+import org.example.snakefx.Model.Score;
 import org.example.snakefx.Model.SnakeHead;
 
 public class GameMap extends Pane {
@@ -21,6 +22,7 @@ public class GameMap extends Pane {
     final int[] y = new int[GAME_UNITS];
     boolean isRunning = false;
     private SnakeHead snakeHead;
+    private Score score;
 
     Timeline timeline;
 
@@ -54,10 +56,11 @@ public class GameMap extends Pane {
         draw();
         spawnFood();
         spawnSnake();
+        initScore();
     }
 
     private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 1,250,250,Color.RED);
+        snakeHead = new SnakeHead(Direction.Left, 0,250,250);
         this.getChildren().add(snakeHead.getNode());
         isRunning = true;
 
@@ -82,5 +85,10 @@ public class GameMap extends Pane {
         if (snakeHead != null) {
             snakeHead.setDirection(direction);
         }
+    }
+
+    public void initScore() {
+        score = new Score(snakeHead.getLengthOfSnake());
+        this.getChildren().add(score.getNode());
     }
 }
