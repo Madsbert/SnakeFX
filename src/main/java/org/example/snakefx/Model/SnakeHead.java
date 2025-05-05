@@ -126,6 +126,9 @@ public class SnakeHead {
     public void addToLengthOfSnake(int add){
         lengthOfSnake += add;
     }
+    public List<SnakePart> getSnakeParts() {
+        return snakeParts;
+    }
 }
 
 

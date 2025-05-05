@@ -7,14 +7,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.example.snakefx.Model.Direction;
-import org.example.snakefx.Model.Foods.Apple;
-import org.example.snakefx.Model.Foods.Banana;
-import org.example.snakefx.Model.Foods.Dragonfruit;
-import org.example.snakefx.Model.Foods.Food;
-import org.example.snakefx.Model.GameTime;
-import org.example.snakefx.Model.Score;
-import org.example.snakefx.Model.SnakeHead;
+import org.example.snakefx.Model.*;
+import org.example.snakefx.Model.Foods.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,33 +98,60 @@ public class GameMap extends Pane {
     private void spawnFood(int fruitsToSpawn) {
         Random random = new Random();
 
-        // Base case: Stop recursion if no more fruits needed or game isn't running
-        if (!isRunning || fruitsToSpawn <= 0) {
-            return;
-        }
-        Food food;
-        int chance = random.nextInt((100)+1);
+        for (int i = 0; i < fruitsToSpawn; i++) {
+            if (!isRunning) {
+                return;
+            }
 
-        if (chance <= 67) {
-            food = new Apple(
-                    random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                    random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
-            this.getChildren().add(food.getImage());
+            Food food;
+            int chance = random.nextInt((100)+1);
+
+            if (chance <= 40) {
+                food = new Apple(
+                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+
+            }
+            else if (chance <= 65) {
+                food = new Banana(
+                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            }
+            else if (chance <= 90) {
+                food = new Brick(
+                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            }
+            else {
+                food = new Dragonfruit(
+                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+
+            }
+
+            boolean positionOccupied = false;
+
+            for( Food existingFood : foods) {
+                if (existingFood.getPositionX() == food.getPositionX() && existingFood.getPositionY() == food.getPositionY()) {
+                    positionOccupied = true;
+                    System.out.println("Double Fruit Spawn prevented");
+                    break;
+                }
+            }
+
+            for (SnakePart snakePart : snakeHead.getSnakeParts()) {
+                if (snakePart.getX() == food.getPositionX() && snakePart.getY() == food.getPositionY()) {
+                    positionOccupied = true;
+                    System.out.println("Spawn on snake prevented");
+                    break;
+                }
+            }
+
+            if (!positionOccupied) {
+                this.getChildren().add(food.getImage());
+                foods.add(food);
+            }
         }
-        else if (chance <= 90) {
-            food = new Banana(
-                    random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                    random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
-            this.getChildren().add(food.getImage());
-        }
-        else {
-            food = new Dragonfruit(
-                    random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                    random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
-            this.getChildren().add(food.getImage());
-        }
-        foods.add(food);
-        spawnFood(fruitsToSpawn - 1);
 
     }
 
@@ -164,6 +185,7 @@ public class GameMap extends Pane {
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(3);
+                    spawnFood(1);
 
                     // replaces gamespeed
                     timeline.stop();
@@ -174,17 +196,32 @@ public class GameMap extends Pane {
                     timeline.getKeyFrames().add(keyFrame);
 
                     timeline.play();
-
                 }
-                else
+                if (foods.get(i).getClass() == Brick.class) {
+
+                    getChildren().remove(foods.get(i).getImage());
+                    foods.remove(foods.get(i));
+                    snakeHead.addToLengthOfSnake(-3);
+                    spawnFood(1);
+
+                    // replaces gamespeed
+                    timeline.stop();
+                    timeline.getKeyFrames().clear();
+                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.4), e -> update());
+                    timeline.getKeyFrames().add(keyFrame);
+
+                    timeline.play();
+                }
+
+                else {
                     //remove food in JavaFX
                     getChildren().remove(foods.get(i).getImage());
-                foods.remove(foods.get(i));
-
-                //increase length to snake
-                snakeHead.addToLengthOfSnake(1);
-                //spawn new food
-                spawnFood(fruitsToSpawn - 1);
+                    foods.remove(foods.get(i));
+                    //increase length to snake
+                    snakeHead.addToLengthOfSnake(1);
+                    //spawn new food
+                    spawnFood(1);
+                }
             }
         }
     }
