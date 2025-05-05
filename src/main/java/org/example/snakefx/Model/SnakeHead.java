@@ -1,8 +1,12 @@
 package org.example.snakefx.Model;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+
+import java.util.Objects;
 
 import static javafx.scene.paint.Color.RED;
 
@@ -12,25 +16,26 @@ public class SnakeHead {
     int snakeHeadPositionX;
     int snakeHeadPositionY;
     private final int snakeSize = 50;
-    private Rectangle snakehead ;
-    private final Color snakeheadColor;
+    private ImageView snakehead;
     private final Rotate rotate;
+
 
     public SnakeHead(Direction direction, int lengthOfSnake, int x, int y, Color snakeheadColor) {
         this.direction = direction;
         this.lengthOfSnake = lengthOfSnake;
         this.snakeHeadPositionX = x;
         this.snakeHeadPositionY = y;
-        this.snakeheadColor = snakeheadColor;
 
-        this.snakehead= new Rectangle(x,y,snakeSize,snakeSize);
-        this.snakehead.setFill(snakeheadColor);
+        Image snakeImage = new Image(getClass().getResourceAsStream("/Pictures/Snakehead.png"));
+        this.snakehead = new ImageView(snakeImage);
+        this.snakehead.setFitWidth(snakeSize);
+        this.snakehead.setFitHeight(snakeSize);
 
         this.rotate = new Rotate(0,snakeSize/2.0,snakeSize/2.0);
-
+        snakehead.getTransforms().add(rotate);
     }
 
-    public Rectangle getNode(){
+    public ImageView getNode(){
         return this.snakehead;
     }
 
@@ -52,19 +57,19 @@ public class SnakeHead {
         switch (direction) {
             case Up:
                 snakeHeadPositionY -= unitSize;
-                snakehead.setRotate(0);
+                snakehead.setRotate(180);
                 break;
             case Down:
                 snakeHeadPositionY += unitSize;
-                snakehead.setRotate(180);
+                snakehead.setRotate(0);
                 break;
             case Left:
                 snakeHeadPositionX -= unitSize;
-                snakehead.setRotate(270);
+                snakehead.setRotate(90);
                 break;
             case Right:
                 snakeHeadPositionX += unitSize;
-                snakehead.setRotate(90);
+                snakehead.setRotate(270);
                 break;
         }
 
