@@ -8,6 +8,9 @@ import javafx.scene.transform.Rotate;
 
 import java.util.Objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javafx.scene.paint.Color.RED;
 
 public class SnakeHead {
@@ -15,9 +18,11 @@ public class SnakeHead {
     int lengthOfSnake;
     int snakeHeadPositionX;
     int snakeHeadPositionY;
-    private final int snakeSize = 50;
+    private final int snakeSize = 25;
     private ImageView snakehead;
     private final Rotate rotate;
+    private List<SnakePart> snakeParts;
+    public Object parent;
 
 
     public SnakeHead(Direction direction, int lengthOfSnake, int x, int y, Color snakeheadColor) {
@@ -32,6 +37,8 @@ public class SnakeHead {
         this.snakehead.setFitHeight(snakeSize);
 
         this.rotate = new Rotate(0,snakeSize/2.0,snakeSize/2.0);
+
+        this.snakeParts = new ArrayList<>();
         snakehead.getTransforms().add(rotate);
     }
 
@@ -78,7 +85,20 @@ public class SnakeHead {
         snakehead.setY(snakeHeadPositionY);
     }
 
+    public void tick()
+    {
+        SnakePart newPart = new SnakePart(lengthOfSnake,snakeHeadPositionX,snakeHeadPositionY, this);
+        snakeParts.add(newPart);
 
+        for (int i = 0; i < snakeParts.size(); i++) {
+            snakeParts.get(i).tick();
+
+            if (!snakeParts.get(i).alive)
+            {
+                snakeParts.remove(i);
+            }
+        }
+    }
 }
 
 
