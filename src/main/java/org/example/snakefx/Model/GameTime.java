@@ -1,22 +1,61 @@
 package org.example.snakefx.Model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import org.example.snakefx.Controller.GameMap;
 
 public class GameTime {
-    private float time = 0.3f;
+    private Timeline timeline;
+    private GameMap gameMap;
+
+    private final float baseTime = 0.3f;
+    private float timeModifier = 1f; // Procent
     private final Text TIME_TEXT = new Text();
 
-    public GameTime() {
-        TIME_TEXT.setText("GameTime: " + time);
+    public GameTime(GameMap gameMap) {
+        TIME_TEXT.setText("GameTime: ");
         TIME_TEXT.setFont(Font.font("Comic Sans MS", 20));
         TIME_TEXT.setX(20);
         TIME_TEXT.setY(40);
+        this.gameMap = gameMap;
+
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setAutoReverse(false);
+
+        updateTime();
+    }
+
+    private void updateTime() {
+        timeline.stop();
+        timeline.getKeyFrames().clear();
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(baseTime * timeModifier), e -> {gameMap.update();});
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
+    }
+
+    /**
+     * changes the modifier with addition.
+     * @param modifier 0.5 = 50% faster than base speed/time.
+     */
+    public void changeToModifier(float modifier) {
+        timeModifier += modifier;
+        updateTime();
+    }
+
+    public void setModifier(float modifier) {
+        timeModifier = modifier;
+        updateTime();
     }
 
     public void tick()
     {
-        TIME_TEXT.setText("GameTime: " + time);
+        TIME_TEXT.setText("GameTime: " + timeModifier * 100 + "%");
     }
 
     public Text getNode(){

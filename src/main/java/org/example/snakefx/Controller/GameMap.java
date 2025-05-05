@@ -36,8 +36,6 @@ public class GameMap extends Pane {
     private Score score;
     private GameTime gameTime;
 
-    Timeline timeline;
-
     private Canvas canvas;
     private GraphicsContext gc;
 
@@ -71,29 +69,17 @@ public class GameMap extends Pane {
         spawnFood(fruitsToSpawn);
         initScore();
         initGameSpeedText();
-
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(false);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.3),
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        update();
-                    }
-                }));
-        timeline.play();
     }
 
 
     private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 10,250,250);
+        snakeHead = new SnakeHead(Direction.Left, 3,250,250);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
 
     }
 
-    private void update()
+    public void update()
     {
         snakeHead.tick();
         snakeHead.move(GameMap.UNIT_SIZE);
@@ -148,7 +134,7 @@ public class GameMap extends Pane {
     }
 
     public void initGameSpeedText() {
-        gameTime = new GameTime();
+        gameTime = new GameTime(this);
         this.getChildren().add(gameTime.getNode());
     }
 }
