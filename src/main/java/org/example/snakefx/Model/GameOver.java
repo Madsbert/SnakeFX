@@ -13,20 +13,26 @@ import org.example.snakefx.Game;
 public class GameOver extends VBox {
 
     private final Text GAME_OVER = new Text("GAME OVER");
+    private Text playerScore= new Text();
     private final Button RETURN_MAIN_MENU = new Button("Tilbage til menu");
+    private Score score;
 
-    public GameOver(Stage primaryStage, Game gameInstance) {
-        // Layout og stil
+    public GameOver(Stage primaryStage, Game gameInstance, Score score) {
+
+        this.score = score;
         this.setAlignment(Pos.CENTER);
         this.setSpacing(40);
         this.setPrefSize(800, 800);
         this.setStyle("-fx-background-color: black;");
 
-        // GAME OVER tekst
-        GAME_OVER.setFont(Font.font("Comic Sans MS", 72));
-        GAME_OVER.setStyle("-fx-fill: lime;"); // limegrøn tekst
+        playerScore.setText("Your score : " + score.getScore());
+        playerScore.setFont(Font.font("Comic Sans MS", 60));
+        playerScore.setStyle("-fx-fill: lime;");
 
-        // Knap tilbage til menu
+        GAME_OVER.setFont(Font.font("Comic Sans MS", 72));
+        GAME_OVER.setStyle("-fx-fill: lime;");
+
+
         RETURN_MAIN_MENU.setFont(Font.font("Comic Sans MS", 28));
         RETURN_MAIN_MENU.setPrefSize(300, 80);
         RETURN_MAIN_MENU.setStyle(
@@ -38,7 +44,7 @@ public class GameOver extends VBox {
                         "-fx-border-width: 2;"
         );
 
-        // Action på klik
+
         RETURN_MAIN_MENU.setOnAction(e -> {
             MainMenu mainMenu = new MainMenu(primaryStage, gameInstance);
             Scene scene = new Scene(mainMenu, 800, 800);
@@ -47,7 +53,7 @@ public class GameOver extends VBox {
             primaryStage.show();
         });
 
-        // Tilføj til layout
-        this.getChildren().addAll(GAME_OVER, RETURN_MAIN_MENU);
+
+        this.getChildren().addAll(GAME_OVER, playerScore, RETURN_MAIN_MENU);
     }
 }

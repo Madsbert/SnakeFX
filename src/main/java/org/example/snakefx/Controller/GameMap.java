@@ -108,7 +108,7 @@ public class GameMap extends Pane {
         snakeHead.parent = this;
         snakeHead.setOnDeath(()->{
             Platform.runLater(()->{
-                GameOver gameover = new GameOver(stage, game);
+                GameOver gameover = new GameOver(stage, game,score);
                 this.getChildren().add(gameover);
 
             });
