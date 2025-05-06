@@ -2,6 +2,7 @@ package org.example.snakefx.Model;
 
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import org.example.snakefx.Controller.GameMap;
 
 /**
  * class to have a score
@@ -20,6 +21,12 @@ public class Score {
     }
     public void addToScore(){
         score += 1;
+    }
+
+    public void tick(SnakeHead snakeHead)
+    {
+        score = snakeHead.lengthOfSnake - 3;
+        SCORE_TEXT.setText("Score: " + score);
     }
 
     /**

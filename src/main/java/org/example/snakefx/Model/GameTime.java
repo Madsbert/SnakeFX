@@ -59,7 +59,7 @@ public class GameTime {
 
     public void tick()
     {
-        float mod = BASETIME + 1.7f - (BASETIME * timeModifier) / BASETIME;
+        float mod = BASETIME + (2 - BASETIME) - (BASETIME * timeModifier) / BASETIME;
         TIME_TEXT.setText("GameTime: " + Math.round(mod * 100) + "%");
     }
 

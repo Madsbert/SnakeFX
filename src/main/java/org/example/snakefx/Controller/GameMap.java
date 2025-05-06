@@ -85,13 +85,18 @@ public class GameMap extends Pane {
     }
 
     /**
-     * Mikkel????
+     * Handles the ticks of the game loop
      */
     public void update()
     {
+        if (snakeHead.getLengthOfSnake() <= 0 )
+        {
+            System.exit(0);
+        }
         snakeHead.tick();
         snakeHead.move();
         checkIfSnakeIsOnTopOfFoodAndIsHellaHungry();
+        score.tick(snakeHead);
         freeToMove = true;
 
         gameTime.tick();
