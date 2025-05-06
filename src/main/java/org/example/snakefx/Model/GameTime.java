@@ -46,11 +46,11 @@ public class GameTime {
     }
 
     /**
-     * changes the modifier with addition.
+     * changes the modifier with subtraction.
      * @param modifier 0.5 = 50% faster than base speed/time.
      */
     public void changeToModifier(float modifier) {
-        timeModifier += modifier;
+        timeModifier -= modifier;
         updateTime();
     }
 
@@ -61,7 +61,8 @@ public class GameTime {
 
     public void tick()
     {
-        TIME_TEXT.setText("GameTime: " + timeModifier * 100 + "%");
+        float mod = baseTime + 1.7f - (baseTime * timeModifier) / baseTime;
+        TIME_TEXT.setText("GameTime: " + mod * 100 + "%");
     }
 
     /**
