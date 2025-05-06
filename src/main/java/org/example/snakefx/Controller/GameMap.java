@@ -32,7 +32,6 @@ public class GameMap extends Pane {
     public boolean freeToMove = true;
     private Score score;
     private GameTime gameTime;
-    private Timeline timeline;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -72,16 +71,7 @@ public class GameMap extends Pane {
         spawnSnake();
         spawnFood(fruitsToSpawn);
         initScore();
-
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(false);
-
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.3), e -> update());
-        timeline.getKeyFrames().add(keyFrame);
-
-        timeline.play();
-        initGameSpeedText();
+        initGameSpeed();
     }
 
     /**
@@ -196,7 +186,7 @@ public class GameMap extends Pane {
     /**
      * initializing game speed text
      */
-    public void initGameSpeedText() {
+    public void initGameSpeed() {
         gameTime = new GameTime(this);
         this.getChildren().add(gameTime.getNode());
     }
@@ -222,14 +212,7 @@ public class GameMap extends Pane {
                     spawnFood(2);
 
                     // replaces gamespeed
-                    timeline.stop();
-
-                    timeline.getKeyFrames().clear();
-
-                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), e -> update());
-                    timeline.getKeyFrames().add(keyFrame);
-
-                    timeline.play();
+                    gameTime.changeToModifier(0.2f);
                 }
                 if (foods.get(i).getClass() == Brick.class) {
 
@@ -239,12 +222,7 @@ public class GameMap extends Pane {
                     spawnFood(1);
 
                     // replaces gamespeed
-                    timeline.stop();
-                    timeline.getKeyFrames().clear();
-                    KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.4), e -> update());
-                    timeline.getKeyFrames().add(keyFrame);
-
-                    timeline.play();
+                    gameTime.changeToModifier(-0.2f);
                 }
 
                 else {
