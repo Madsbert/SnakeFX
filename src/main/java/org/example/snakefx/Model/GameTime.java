@@ -6,8 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.snakefx.Controller.GameMap;
+import org.example.snakefx.Game;
 
 /**
  *class which shows the user how fast the game is moving

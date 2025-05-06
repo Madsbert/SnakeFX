@@ -2,11 +2,14 @@ package org.example.snakefx.Controller;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
@@ -31,7 +34,8 @@ public class GameMap extends Pane {
     int fruitsToSpawn = 3;
     public boolean freeToMove = true;
     private Score score;
-    private GameTime gameTime;
+    public GameTime gameTime;
+    private GameOver gameOver;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -65,10 +69,10 @@ public class GameMap extends Pane {
     /**
      * starts the game and initializes necessary participants and starts timeline
      */
-    public void startGame() {
+    public void startGame(Stage stage, Game game) {
         isRunning = true;
         draw();
-        spawnSnake();
+        spawnSnake(stage, game);
         spawnFood(fruitsToSpawn);
         initScore();
         initGameSpeed();
@@ -77,10 +81,17 @@ public class GameMap extends Pane {
     /**
      * spawns the snake
      */
-    private void spawnSnake() {
-        snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10);
+    private void spawnSnake(Stage stage, Game game) {
+        snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10, true);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
+        snakeHead.setOnDeath(()->{
+            Platform.runLater(()->{
+                GameOver gameover = new GameOver(stage, game);
+                this.getChildren().add(gameover);
+
+            });
+        });
 
     }
 
