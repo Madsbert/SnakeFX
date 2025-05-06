@@ -10,12 +10,18 @@ public abstract class Food {
     int positionX;
     int positionY;
     int foodValue;
+    public int lifetime = 35;
 
     public Food(int positionX, int positionY, int foodValue ) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.foodValue = foodValue;
 
+    }
+
+    public void tick()
+    {
+        lifetime--;
     }
 
     public abstract void getsEaten();

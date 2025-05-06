@@ -99,6 +99,15 @@ public class GameMap extends Pane {
         score.tick(snakeHead);
         freeToMove = true;
 
+        for (int i = 0; i < foods.size(); i++) {
+            foods.get(i).tick();
+            if (foods.get(i).lifetime <= 0)
+            {
+                foods.remove(i);
+                i--;
+            }
+        }
+
         gameTime.tick();
         System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
         Runtime.getRuntime().gc();
