@@ -50,6 +50,7 @@ public class GameTime {
      * @param modifier 0.5 = 50% faster than base speed/time.
      */
     public void changeToModifier(float modifier) {
+        if (timeModifier - modifier < 0.2f || timeModifier - modifier > 1.8f) { return; }
         timeModifier -= modifier;
         updateTime();
     }

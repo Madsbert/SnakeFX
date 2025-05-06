@@ -67,7 +67,7 @@ public class SnakePart extends ImageView {
     public void tick()
     {
         lifeTime--;
-        if (lifeTime == 0){
+        if (lifeTime <= 0){
             alive = false;
             pane.getChildren().remove(this);
         }
