@@ -2,8 +2,6 @@ package org.example.snakefx.Model;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -16,7 +14,7 @@ public class GameTime {
     private Timeline timeline;
     private GameMap gameMap;
 
-    private final float baseTime = 0.3f;
+    private final float BASETIME = 0.2f;
     private float timeModifier = 1f; // Procent
     private final Text TIME_TEXT = new Text();
 
@@ -40,7 +38,7 @@ public class GameTime {
     private void updateTime() {
         timeline.stop();
         timeline.getKeyFrames().clear();
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(baseTime * timeModifier), e -> {gameMap.update();});
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(BASETIME * timeModifier), e -> {gameMap.update();});
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
@@ -62,8 +60,8 @@ public class GameTime {
 
     public void tick()
     {
-        float mod = baseTime + 1.7f - (baseTime * timeModifier) / baseTime;
-        TIME_TEXT.setText("GameTime: " + mod * 100 + "%");
+        float mod = BASETIME + (2 - BASETIME) - (BASETIME * timeModifier) / BASETIME;
+        TIME_TEXT.setText("GameTime: " + Math.round(mod * 100) + "%");
     }
 
     /**

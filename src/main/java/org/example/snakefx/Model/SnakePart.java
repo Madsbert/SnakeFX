@@ -19,7 +19,7 @@ public class SnakePart extends ImageView {
     private Pane pane;
 
     public SnakePart(int lifeTime, int snakePartPositionX, int snakePartPositionY, SnakeHead parent) {
-        this.lifeTime = lifeTime - 1;
+        this.lifeTime = lifeTime;
         alive = true;
 
         this.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/SnakeBody.png"))));
