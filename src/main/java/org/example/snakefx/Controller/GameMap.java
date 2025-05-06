@@ -5,7 +5,10 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -13,6 +16,7 @@ import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +36,7 @@ public class GameMap extends Pane {
     private SnakeHead snakeHead;
     private List<Food> foods = new ArrayList<>();
     int fruitsToSpawn = 3;
+    int amountOfBricks = 0;
     public boolean freeToMove = true;
     private Score score;
     public GameTime gameTime;
@@ -53,6 +58,21 @@ public class GameMap extends Pane {
      * draws grid
      */
     public void draw() {
+
+//        List<FloorTile> floorTiles = new ArrayList<>();
+//
+//        // Get the count of floor tiles directly
+//        File tilesDir = new File("src/main/resources/Floor Tiles");
+//        File[] tileFiles = tilesDir.listFiles((dir, name) -> name.endsWith(".png"));
+//        int amountOfALL = tileFiles.length;
+//
+//        for (int i = 0; i < amountOfALL; i++) {
+//            floorTiles.add((new FloorTile(new ImageView(String.valueOf(getClass().getResourceAsStream(tileFiles[i].toString()))))));
+//        }
+//
+//
+
+
         gc.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         if (isRunning) {
@@ -64,6 +84,7 @@ public class GameMap extends Pane {
                 gc.strokeLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
             }
         }
+
     }
 
     /**
@@ -96,13 +117,18 @@ public class GameMap extends Pane {
     }
 
     /**
-     * Mikkel????
+     * Handles the ticks of the game loop
      */
     public void update()
     {
+        if (snakeHead.getLengthOfSnake() <= 0 )
+        {
+            System.exit(0);
+        }
         snakeHead.tick();
         snakeHead.move();
         checkIfSnakeIsOnTopOfFoodAndIsHellaHungry();
+        score.tick(snakeHead);
         freeToMove = true;
 
         gameTime.tick();
@@ -169,12 +195,24 @@ public class GameMap extends Pane {
             }
 
             if (!positionOccupied) {
-                this.getChildren().add(food.getImage());
-                foods.add(food);
+                if (food.getClass() == Brick.class){
+                    if ( amountOfBricks <= 1){
+                        amountOfBricks++;
+                        this.getChildren().add(food.getImage());
+                        foods.add(food);
+                    }
+                    spawnFood(1);
+                }
+                else {
+                    this.getChildren().add(food.getImage());
+                    foods.add(food);
+                }
+
+            }
+
+
             }
         }
-
-    }
 
     /**
      * sets snake direction
@@ -226,7 +264,7 @@ public class GameMap extends Pane {
                     gameTime.changeToModifier(0.2f);
                 }
                 if (foods.get(i).getClass() == Brick.class) {
-
+                    amountOfBricks--;
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(-3);

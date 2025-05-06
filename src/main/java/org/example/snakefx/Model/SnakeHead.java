@@ -22,7 +22,7 @@ public class SnakeHead {
     int lengthOfSnake;
     int snakeHeadPositionX;
     int snakeHeadPositionY;
-    private final int snakeSize = 25;
+    private final int snakeSize = GameMap.UNIT_SIZE;
     private ImageView snakehead;
     private final Rotate rotate;
     private List<SnakePart> snakeParts;
