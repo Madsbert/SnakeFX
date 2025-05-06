@@ -16,7 +16,9 @@ import org.example.snakefx.Model.Direction;
 
 import java.awt.event.ActionEvent;
 
-
+/**
+ * class which sets up and controls the main menu window
+ */
 public class MainMenu extends Pane {
     public MainMenu(Stage primaryStage, Game gameInstance) {
 
@@ -56,6 +58,11 @@ public class MainMenu extends Pane {
         this.setStyle("-fx-padding: 100; -fx-alignment: center;");
     }
 
+    /**
+     * method that sets up a styled button
+     * @param text the text that should be in the button
+     * @return a button
+     */
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(new Font("Arial", 24));

@@ -10,6 +10,9 @@ import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import org.example.snakefx.Game;
 
+/**
+ * a class that setsup and controls the rules menu
+ */
 public class RulesMenu extends StackPane {
 
     public RulesMenu(Stage primaryStage, Game gameInstance) {
@@ -35,6 +38,10 @@ public class RulesMenu extends StackPane {
         this.setStyle("-fx-background-color: #111111;");
     }
 
+    /**
+     * method that sets up the style for a button
+     * @param button a button
+     */
     private void styleButton(Button button) {
         button.setFont(new Font("Arial", 20));
         button.setStyle(

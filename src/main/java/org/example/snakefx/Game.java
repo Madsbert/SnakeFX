@@ -41,6 +41,10 @@ private GameMap gameMap;
         primaryStage.show();
     }
 
+    /**
+     * starts the game and takes keypress input from user
+     * @param primaryStage a stage
+     */
     public void startGame(Stage primaryStage) {
         this.gameMap = new GameMap();
         Scene gameScene = new Scene(gameMap);
@@ -56,6 +60,11 @@ private GameMap gameMap;
 
         gameScene.setOnKeyPressed(this::handleKeyPress);
     }
+
+    /**
+     * input handler
+     * @param event key presses from user
+     */
     private void handleKeyPress(KeyEvent event) {
         if (gameMap.freeToMove) {
             switch (event.getCode()) {

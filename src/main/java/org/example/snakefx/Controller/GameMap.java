@@ -64,7 +64,7 @@ public class GameMap extends Pane {
     }
 
     /**
-     * starts the game and initializes necsseray participants and starts timline
+     * starts the game and initializes necessary participants and starts timeline
      */
     public void startGame() {
         isRunning = true;
@@ -194,7 +194,7 @@ public class GameMap extends Pane {
     }
 
     /**
-     * initializing game speed text text
+     * initializing game speed text
      */
     public void initGameSpeedText() {
         gameTime = new GameTime(this);
@@ -202,7 +202,7 @@ public class GameMap extends Pane {
     }
 
     /**
-     * method to eat the fruit and changes game speed acording to the fruits eaten
+     * method to eat the fruit and changes game speed according to the fruits eaten
      */
     public void checkIfSnakeIsOnTopOfFoodAndIsHellaHungry() {
         int sx = snakeHead.getSnakeHeadPositionX();
