@@ -21,10 +21,7 @@ public class Brick extends Food {
 
     }
 
-    @Override
-    public void getsEaten() {
 
-    }
 
     /**
      * method to return the imageview

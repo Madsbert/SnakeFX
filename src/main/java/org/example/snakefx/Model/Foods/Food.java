@@ -18,7 +18,6 @@ public abstract class Food {
 
     }
 
-    public abstract void getsEaten();
     /**
      * method to return the imageview
      * @return an imageview

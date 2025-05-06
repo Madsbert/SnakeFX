@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import org.example.snakefx.Controller.MainMenu;
 import org.example.snakefx.Game;
 
+/**
+ * class which shows gameover screen and has button to main menu
+ */
 public class GameOver extends VBox {
 
     private final Text GAME_OVER = new Text("GAME OVER");

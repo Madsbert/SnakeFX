@@ -38,6 +38,10 @@ public class Score {
         return this.SCORE_TEXT;
     }
 
+    /**
+     * returns the score
+     * @return score
+     */
     public int getScore() {
         return score;
     }

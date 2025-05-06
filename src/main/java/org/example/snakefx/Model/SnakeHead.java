@@ -27,16 +27,15 @@ public class SnakeHead {
     private final Rotate rotate;
     private List<SnakePart> snakeParts;
     public Object parent;
-    private boolean isAlive=true;
     private Runnable onDeath;
 
 
-    public SnakeHead(Direction direction, int lengthOfSnake, int x, int y, boolean alive) {
+    public SnakeHead(Direction direction, int lengthOfSnake, int x, int y) {
         this.direction = direction;
         this.lengthOfSnake = lengthOfSnake;
         this.snakeHeadPositionX = x;
         this.snakeHeadPositionY = y;
-        this.isAlive = alive;
+
 
         Image snakeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/Snakehead.png")));
         this.snakehead = new ImageView(snakeImage);
@@ -58,8 +57,6 @@ public class SnakeHead {
         return this.snakehead;
     }
 
-    public Direction getDirection() { return direction; }
-
     /**
      * method to set the direction and prevent it from impossible movements
      * @param newDirection the direction the snake is heading
@@ -73,8 +70,6 @@ public class SnakeHead {
         }
         this.direction = newDirection;
     }
-
-    public void checkCollision() {}
 
     public void setOnDeath(Runnable onDeath) { this.onDeath = onDeath; }
 
@@ -122,7 +117,6 @@ public class SnakeHead {
             if (snakePart.getX() == snakeHeadPositionX && snakePart.getY() == snakeHeadPositionY) {
                 if (parent instanceof GameMap gameMap)
                 {
-                    isAlive = false;
                     die();
                     gameMap.gameTime.setModifier(0);
                 }
@@ -134,11 +128,9 @@ public class SnakeHead {
         || (snakeHeadPositionX < 0 || snakeHeadPositionY < 0)) {
 
             if (parent instanceof GameMap gameMap) {
-                isAlive = false;
                 die();
                 gameMap.gameTime.setModifier(0);
             }
-            //Runtime.getRuntime().exit(0);
         }
 
         // Sæt ny position
@@ -189,8 +181,10 @@ public class SnakeHead {
         return snakeParts;
     }
 
+    /**
+     * method to run the runnable onDeath
+     */
     public void die() {
-        isAlive = false;
         if (onDeath != null) {
             onDeath.run();
         }

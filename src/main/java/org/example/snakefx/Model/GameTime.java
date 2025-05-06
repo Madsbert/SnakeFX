@@ -55,11 +55,18 @@ public class GameTime {
         updateTime();
     }
 
+    /**
+     * set the time modifier
+     * @param modifier
+     */
     public void setModifier(float modifier) {
         timeModifier = modifier;
         updateTime();
     }
 
+    /**
+     * sets the gametime in game
+     */
     public void tick()
     {
         float mod = BASETIME + (2 - BASETIME) - (BASETIME * timeModifier) / BASETIME;
@@ -73,6 +80,6 @@ public class GameTime {
     public Text getNode(){
         return this.TIME_TEXT;
     }
-    public void showScore() {}
+
 }
 

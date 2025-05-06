@@ -43,14 +43,6 @@ public class SnakePart extends ImageView {
                 break;
         }
 
-        /*
-        this.setHeight(GameMap.UNIT_SIZE);
-        this.setWidth(GameMap.UNIT_SIZE);
-        this.setX(snakePartPositionX);
-        this.setY(snakePartPositionY);
-        this.setFill(Color.RED);
-
-         */
         this.parent = parent;
 
         if (this.parent.parent != null && this.parent.parent instanceof Pane parentPane) {
@@ -58,8 +50,6 @@ public class SnakePart extends ImageView {
             pane = parentPane;
         }
     }
-
-    public void deathOfPart(){}
 
     /**
      * removes snakeparts from the lifetime of the snake part has expired
@@ -72,10 +62,4 @@ public class SnakePart extends ImageView {
             pane.getChildren().remove(this);
         }
     }
-
-    public int getLiftTime() {
-        return lifeTime;
-    }
-
-    public void snakePartSprite(){}
 }

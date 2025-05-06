@@ -103,7 +103,7 @@ public class GameMap extends Pane {
      * spawns the snake
      */
     private void spawnSnake(Stage stage, Game game) {
-        snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10, true);
+        snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
         snakeHead.setOnDeath(()->{
