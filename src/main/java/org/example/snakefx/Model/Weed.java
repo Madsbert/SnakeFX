@@ -21,7 +21,7 @@ public class Weed extends Food {
 
     public void eat()
     {
-        
+
     }
 
     /**
