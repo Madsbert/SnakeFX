@@ -55,6 +55,11 @@ public class GameTime {
         updateTime();
     }
 
+    public void resetBaseSpeedToOriginal(){
+        timeModifier = 1;
+        updateTime();
+    }
+
     /**
      * set the time modifier
      * @param modifier

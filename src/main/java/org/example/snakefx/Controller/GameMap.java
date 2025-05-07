@@ -37,7 +37,7 @@ public class GameMap extends Pane {
     boolean isRunning = false;
     private SnakeHead snakeHead;
     private List<Food> foods = new ArrayList<>();
-    int fruitsToSpawn = 3;
+    int fruitsToSpawn = 10;
     int amountOfBricks = 0;
     public boolean freeToMove = true;
     private Score score;
@@ -65,9 +65,6 @@ public class GameMap extends Pane {
         tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile1.png"))));
         tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile2.png"))));
 
-        //floorTiles.add((new FloorTile(new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile1.png"))))))));
-        //floorTiles.add((new FloorTile(new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile2.png"))))))));
-
         int amountOfTilesWidth = SCREEN_WIDTH / UNIT_SIZE;
         int amountOfTilesHight = SCREEN_HEIGHT / UNIT_SIZE;
 
@@ -86,7 +83,6 @@ public class GameMap extends Pane {
 
                 //add to scene
                 this.getChildren().add(floorTile.getImage());
-
             }
         }
     }
@@ -168,6 +164,11 @@ public class GameMap extends Pane {
             }
             else if (chance <= 90) {
                 food = new Brick(
+                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            }
+            else if (chance <= 95) {
+                food = new Weed(
                         random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
@@ -276,6 +277,23 @@ public class GameMap extends Pane {
 
                     // replaces gamespeed
                     gameTime.changeToModifier(-0.2f);
+                }
+
+                if (foods.get(i).getClass() == Weed.class) {
+                    getChildren().remove(foods.get(i).getImage());
+                    foods.remove(foods.get(i));
+                    spawnFood(1);
+
+                    // reset game speed
+                    gameTime.resetBaseSpeedToOriginal();
+
+                    // Rotate the canvas
+                    canvas.setRotate((canvas.getRotate() + 90) % 360);
+
+                    // Reposition the canvas to keep it centered
+                    canvas.setTranslateX((SCREEN_WIDTH - canvas.getHeight()) / 2);
+                    canvas.setTranslateY((SCREEN_HEIGHT - canvas.getWidth()) / 2);
+
                 }
 
                 else {
