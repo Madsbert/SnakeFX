@@ -118,6 +118,7 @@ public class GameMap extends Pane {
                 GameOver gameover = new GameOver(stage, game,score);
                 this.getChildren().add(gameover);
 
+                this.setRotate(0);
             });
         });
 
@@ -295,7 +296,7 @@ public class GameMap extends Pane {
                     gameTime.resetBaseSpeedToOriginal();
 
                     // Rotate the canvas
-                    canvas.setRotate((canvas.getRotate() + 90) % 360);
+                    this.setRotate((this.getRotate() + 90) % 360);
 
                     // Reposition the canvas to keep it centered
                     canvas.setTranslateX((SCREEN_WIDTH - canvas.getHeight()) / 2);
