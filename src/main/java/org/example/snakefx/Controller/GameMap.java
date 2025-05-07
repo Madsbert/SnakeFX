@@ -17,8 +17,10 @@ import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -41,7 +43,7 @@ public class GameMap extends Pane {
     private Score score;
     public GameTime gameTime;
     private GameOver gameOver;
-
+    public Random random = new Random();
     private Canvas canvas;
     private GraphicsContext gc;
 
@@ -55,36 +57,38 @@ public class GameMap extends Pane {
     }
 
     /**
-     * draws grid
+     * draws FloorTiles
      */
     public void draw() {
+        List<Image> tileImages = new ArrayList<>();
 
-//        List<FloorTile> floorTiles = new ArrayList<>();
-//
-//        // Get the count of floor tiles directly
-//        File tilesDir = new File("src/main/resources/Floor Tiles");
-//        File[] tileFiles = tilesDir.listFiles((dir, name) -> name.endsWith(".png"));
-//        int amountOfALL = tileFiles.length;
-//
-//        for (int i = 0; i < amountOfALL; i++) {
-//            floorTiles.add((new FloorTile(new ImageView(String.valueOf(getClass().getResourceAsStream(tileFiles[i].toString()))))));
-//        }
-//
-//
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile1.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile2.png"))));
 
+        //floorTiles.add((new FloorTile(new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile1.png"))))))));
+        //floorTiles.add((new FloorTile(new ImageView((new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile2.png"))))))));
 
-        gc.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        int amountOfTilesWidth = SCREEN_WIDTH / UNIT_SIZE;
+        int amountOfTilesHight = SCREEN_HEIGHT / UNIT_SIZE;
 
-        if (isRunning) {
-            gc.setStroke(Color.GREEN);
-            for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
-                // Vertical lines
-                gc.strokeLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-                // Horizontal lines
-                gc.strokeLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
+        for (int row = 0; row < amountOfTilesHight; row++) {
+            for (int col = 0; col < amountOfTilesWidth; col++) {
+
+                //create imageview from list of images, randomly
+                ImageView tileView = new ImageView(tileImages.get(random.nextInt(tileImages.size())));
+
+                // Create and configure FloorTile
+                FloorTile floorTile = new FloorTile(tileView);
+
+                //position
+                tileView.setX(col * GameMap.UNIT_SIZE);
+                tileView.setY(row * GameMap.UNIT_SIZE);
+
+                //add to scene
+                this.getChildren().add(floorTile.getImage());
+
             }
         }
-
     }
 
     /**
@@ -141,7 +145,7 @@ public class GameMap extends Pane {
      * @param fruitsToSpawn how many fruits that should be on the map
      */
     private void spawnFood(int fruitsToSpawn) {
-        Random random = new Random();
+
 
         for (int i = 0; i < fruitsToSpawn; i++) {
             if (!isRunning) {
