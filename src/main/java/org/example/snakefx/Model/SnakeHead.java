@@ -3,7 +3,9 @@ package org.example.snakefx.Model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Stage;
 import org.example.snakefx.Controller.GameMap;
+import org.example.snakefx.Game;
 
 import java.util.Objects;
 
@@ -25,6 +27,7 @@ public class SnakeHead {
     private final Rotate rotate;
     private List<SnakePart> snakeParts;
     public Object parent;
+    private Runnable onDeath;
 
 
     public SnakeHead(Direction direction, int lengthOfSnake, int x, int y) {
@@ -32,6 +35,7 @@ public class SnakeHead {
         this.lengthOfSnake = lengthOfSnake;
         this.snakeHeadPositionX = x;
         this.snakeHeadPositionY = y;
+
 
         Image snakeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/Snakehead.png")));
         this.snakehead = new ImageView(snakeImage);
@@ -53,8 +57,6 @@ public class SnakeHead {
         return this.snakehead;
     }
 
-    public Direction getDirection() { return direction; }
-
     /**
      * method to set the direction and prevent it from impossible movements
      * @param newDirection the direction the snake is heading
@@ -69,7 +71,7 @@ public class SnakeHead {
         this.direction = newDirection;
     }
 
-    public void checkCollision() {}
+    public void setOnDeath(Runnable onDeath) { this.onDeath = onDeath; }
 
     /**
      * method to get the x postion
@@ -113,14 +115,22 @@ public class SnakeHead {
         // Death upon hitting tail
         for (SnakePart snakePart : snakeParts) {
             if (snakePart.getX() == snakeHeadPositionX && snakePart.getY() == snakeHeadPositionY) {
-                Runtime.getRuntime().exit(0);
+                if (parent instanceof GameMap gameMap)
+                {
+                    die();
+                    gameMap.gameTime.setModifier(0);
+                }
             }
         }
 
         // Death upon leaving grid area
         if ((snakeHeadPositionX >= GameMap.SCREEN_WIDTH || snakeHeadPositionY >= GameMap.SCREEN_HEIGHT)
         || (snakeHeadPositionX < 0 || snakeHeadPositionY < 0)) {
-            Runtime.getRuntime().exit(0);
+
+            if (parent instanceof GameMap gameMap) {
+                die();
+                gameMap.gameTime.setModifier(0);
+            }
         }
 
         // Sæt ny position
@@ -169,6 +179,15 @@ public class SnakeHead {
      */
     public List<SnakePart> getSnakeParts() {
         return snakeParts;
+    }
+
+    /**
+     * method to run the runnable onDeath
+     */
+    public void die() {
+        if (onDeath != null) {
+            onDeath.run();
+        }
     }
 }
 

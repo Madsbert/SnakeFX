@@ -2,16 +2,25 @@ package org.example.snakefx.Controller;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -28,11 +37,13 @@ public class GameMap extends Pane {
     boolean isRunning = false;
     private SnakeHead snakeHead;
     private List<Food> foods = new ArrayList<>();
-    int fruitsToSpawn = 3;
+    int fruitsToSpawn = 10;
+    int amountOfBricks = 0;
     public boolean freeToMove = true;
     private Score score;
-    private GameTime gameTime;
-
+    public GameTime gameTime;
+    private GameOver gameOver;
+    public Random random = new Random();
     private Canvas canvas;
     private GraphicsContext gc;
 
@@ -46,18 +57,39 @@ public class GameMap extends Pane {
     }
 
     /**
-     * draws grid
+     * draws FloorTiles
      */
     public void draw() {
-        gc.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        List<Image> tileImages = new ArrayList<>();
 
-        if (isRunning) {
-            gc.setStroke(Color.GREEN);
-            for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
-                // Vertical lines
-                gc.strokeLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-                // Horizontal lines
-                gc.strokeLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile1.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile2.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile3.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile4.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile5.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile6.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile7.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile8.png.png"))));
+        tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile9.png.png"))));
+
+        int amountOfTilesWidth = SCREEN_WIDTH / UNIT_SIZE;
+        int amountOfTilesHight = SCREEN_HEIGHT / UNIT_SIZE;
+
+        for (int row = 0; row < amountOfTilesHight; row++) {
+            for (int col = 0; col < amountOfTilesWidth; col++) {
+
+                //create imageview from list of images, randomly
+                ImageView tileView = new ImageView(tileImages.get(random.nextInt(tileImages.size())));
+
+                // Create and configure FloorTile
+                FloorTile floorTile = new FloorTile(tileView);
+
+                //position
+                tileView.setX(col * GameMap.UNIT_SIZE);
+                tileView.setY(row * GameMap.UNIT_SIZE);
+
+                //add to scene
+                this.getChildren().add(floorTile.getImage());
             }
         }
     }
@@ -65,10 +97,10 @@ public class GameMap extends Pane {
     /**
      * starts the game and initializes necessary participants and starts timeline
      */
-    public void startGame() {
+    public void startGame(Stage stage, Game game) {
         isRunning = true;
         draw();
-        spawnSnake();
+        spawnSnake(stage, game);
         spawnFood(fruitsToSpawn);
         initScore();
         initGameSpeed();
@@ -77,10 +109,18 @@ public class GameMap extends Pane {
     /**
      * spawns the snake
      */
-    private void spawnSnake() {
+    private void spawnSnake(Stage stage, Game game) {
         snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10);
         this.getChildren().add(snakeHead.getNode());
         snakeHead.parent = this;
+        snakeHead.setOnDeath(()->{
+            Platform.runLater(()->{
+                GameOver gameover = new GameOver(stage, game,score);
+                this.getChildren().add(gameover);
+
+                this.setRotate(0);
+            });
+        });
 
     }
 
@@ -118,7 +158,7 @@ public class GameMap extends Pane {
      * @param fruitsToSpawn how many fruits that should be on the map
      */
     private void spawnFood(int fruitsToSpawn) {
-        Random random = new Random();
+
 
         for (int i = 0; i < fruitsToSpawn; i++) {
             if (!isRunning) {
@@ -141,6 +181,11 @@ public class GameMap extends Pane {
             }
             else if (chance <= 90) {
                 food = new Brick(
+                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+            }
+            else if (chance <= 95) {
+                food = new Weed(
                         random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
@@ -172,12 +217,24 @@ public class GameMap extends Pane {
             }
 
             if (!positionOccupied) {
-                this.getChildren().add(food.getImage());
-                foods.add(food);
+                if (food.getClass() == Brick.class){
+                    if ( amountOfBricks <= 1){
+                        amountOfBricks++;
+                        this.getChildren().add(food.getImage());
+                        foods.add(food);
+                    }
+                    spawnFood(1);
+                }
+                else {
+                    this.getChildren().add(food.getImage());
+                    foods.add(food);
+                }
+
+            }
+
+
             }
         }
-
-    }
 
     /**
      * sets snake direction
@@ -229,7 +286,7 @@ public class GameMap extends Pane {
                     gameTime.changeToModifier(0.2f);
                 }
                 if (foods.get(i).getClass() == Brick.class) {
-
+                    amountOfBricks--;
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(-3);
@@ -237,6 +294,23 @@ public class GameMap extends Pane {
 
                     // replaces gamespeed
                     gameTime.changeToModifier(-0.2f);
+                }
+
+                if (foods.get(i).getClass() == Weed.class) {
+                    getChildren().remove(foods.get(i).getImage());
+                    foods.remove(foods.get(i));
+                    spawnFood(1);
+
+                    // reset game speed
+                    gameTime.resetBaseSpeedToOriginal();
+
+                    // Rotate the canvas
+                    this.setRotate((this.getRotate() + 90) % 360);
+
+                    // Reposition the canvas to keep it centered
+                    canvas.setTranslateX((SCREEN_WIDTH - canvas.getHeight()) / 2);
+                    canvas.setTranslateY((SCREEN_HEIGHT - canvas.getWidth()) / 2);
+
                 }
 
                 else {

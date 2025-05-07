@@ -4,8 +4,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.snakefx.Controller.GameMap;
+import org.example.snakefx.Game;
 
 /**
  *class which shows the user how fast the game is moving
@@ -48,15 +50,28 @@ public class GameTime {
      * @param modifier 0.5 = 50% faster than base speed/time.
      */
     public void changeToModifier(float modifier) {
+        if (timeModifier - modifier < 0.2f || timeModifier - modifier > 1.8f) { return; }
         timeModifier -= modifier;
         updateTime();
     }
 
+    public void resetBaseSpeedToOriginal(){
+        timeModifier = 1;
+        updateTime();
+    }
+
+    /**
+     * set the time modifier
+     * @param modifier
+     */
     public void setModifier(float modifier) {
         timeModifier = modifier;
         updateTime();
     }
 
+    /**
+     * sets the gametime in game
+     */
     public void tick()
     {
         float mod = BASETIME + (2 - BASETIME) - (BASETIME * timeModifier) / BASETIME;
@@ -70,6 +85,6 @@ public class GameTime {
     public Text getNode(){
         return this.TIME_TEXT;
     }
-    public void showScore() {}
+
 }
 

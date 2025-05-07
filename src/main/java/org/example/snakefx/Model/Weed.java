@@ -1,18 +1,16 @@
-package org.example.snakefx.Model.Foods;
+package org.example.snakefx.Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.snakefx.Controller.GameMap;
+import org.example.snakefx.Model.Foods.Food;
 
-/**
- * brick class
- */
-public class Brick extends Food {
+public class Weed extends Food {
     ImageView image;
 
-    public Brick(int positionX, int positionY) {
-        super(positionX, positionY, 100);
-        Image dragonImage = new Image(getClass().getResourceAsStream("/Pictures/Brick.png"));
+    public Weed(int positionX, int positionY) {
+        super(positionX, positionY, 1);
+        Image dragonImage = new Image(getClass().getResourceAsStream("/Pictures/Weed.png"));
         this.image = new ImageView(dragonImage);
         this.image.setFitWidth(GameMap.UNIT_SIZE);
         this.image.setFitHeight(GameMap.UNIT_SIZE);

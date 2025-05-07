@@ -19,10 +19,11 @@ public class Score {
         SCORE_TEXT.setX(20);
         SCORE_TEXT.setY(20);
     }
-    public void addToScore(){
-        score += 1;
-    }
 
+    /**
+     * gets the score and sets the text
+     * @param snakeHead
+     */
     public void tick(SnakeHead snakeHead)
     {
         score = snakeHead.lengthOfSnake - 3;
@@ -36,6 +37,14 @@ public class Score {
     public Text getNode(){
         return this.SCORE_TEXT;
     }
-    public void showScore() {}
+
+    /**
+     * returns the score
+     * @return score
+     */
+    public int getScore() {
+        return score;
+    }
+
 }
 

@@ -56,7 +56,7 @@ private GameMap gameMap;
         primaryStage.show();
 
         gameMap.requestFocus();
-        gameMap.startGame();
+        gameMap.startGame(primaryStage, this);
 
         gameScene.setOnKeyPressed(this::handleKeyPress);
     }
