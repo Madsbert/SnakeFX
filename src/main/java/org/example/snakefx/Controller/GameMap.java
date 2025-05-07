@@ -35,7 +35,7 @@ public class GameMap extends Pane {
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
     boolean isRunning = false;
-    private SnakeHead snakeHead;
+    private static SnakeHead snakeHead;
     private List<Food> foods = new ArrayList<>();
     int fruitsToSpawn = 10;
     int amountOfBricks = 0;
@@ -54,6 +54,10 @@ public class GameMap extends Pane {
 
         // Set preferred size for proper layout
         this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+
+    public static SnakeHead getSnakeHead() {
+        return snakeHead;
     }
 
     /**
@@ -273,10 +277,14 @@ public class GameMap extends Pane {
             int fx = foods.get(i).getPositionX();
             int fy = foods.get(i).getPositionY();
 
-            if (sx == fx && sy == fy) {
+            int diffX = Math.abs(sx - fx);
+            int diffY = Math.abs(sy - fy);
 
+            if (diffX <= (snakeHead.getSnakeSize() * UNIT_SIZE)/2 + 5 && diffY <= (snakeHead.getSnakeSize() * UNIT_SIZE)/2 + 5) {
+                System.out.println(diffX + ", " + diffY);
                 if (foods.get(i).getClass() == Dragonfruit.class) {
 
+                    foods.get(i).eat();
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(3);

@@ -3,6 +3,7 @@ package org.example.snakefx.Model.Foods;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.snakefx.Controller.GameMap;
+import org.example.snakefx.Model.SnakeHead;
 
 /**
  * a Dragonfruit class
@@ -22,7 +23,11 @@ public class Dragonfruit extends Food {
 
     }
 
-
+    @Override
+    public void eat() {
+        SnakeHead snakeHead = GameMap.getSnakeHead();
+        snakeHead.setSnakeSize(snakeHead.getSnakeSize() + 1);
+    }
 
     /**
      * method to return the imageview

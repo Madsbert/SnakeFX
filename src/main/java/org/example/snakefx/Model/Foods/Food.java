@@ -1,7 +1,8 @@
 package org.example.snakefx.Model.Foods;
 
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+
+import java.util.List;
 
 /**
  * abstract class that gives all foods some methods
@@ -24,6 +25,7 @@ public abstract class Food {
         lifetime--;
     }
 
+    public abstract void eat();
     /**
      * method to return the imageview
      * @return an imageview

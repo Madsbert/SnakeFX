@@ -19,6 +19,11 @@ public class Weed extends Food {
 
     }
 
+    public void eat()
+    {
+        
+    }
+
     /**
      * method to return the imageview
      * @return an imageview

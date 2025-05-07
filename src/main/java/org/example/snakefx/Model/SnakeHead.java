@@ -22,7 +22,7 @@ public class SnakeHead {
     int lengthOfSnake;
     int snakeHeadPositionX;
     int snakeHeadPositionY;
-    private final int snakeSize = GameMap.UNIT_SIZE;
+    private int snakeSize = 1;
     private ImageView snakehead;
     private final Rotate rotate;
     private List<SnakePart> snakeParts;
@@ -39,8 +39,8 @@ public class SnakeHead {
 
         Image snakeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/Snakehead.png")));
         this.snakehead = new ImageView(snakeImage);
-        this.snakehead.setFitWidth(snakeSize);
-        this.snakehead.setFitHeight(snakeSize);
+        this.snakehead.setFitWidth(snakeSize * GameMap.UNIT_SIZE);
+        this.snakehead.setFitHeight(snakeSize * GameMap.UNIT_SIZE);
 
         this.rotate = new Rotate(0,snakeSize/2.0,snakeSize/2.0);
 
@@ -48,6 +48,21 @@ public class SnakeHead {
         snakehead.getTransforms().add(rotate);
     }
 
+    /**
+     * Gets size of snakehead. Default is 1.
+     * @return
+     */
+    public int getSnakeSize() {
+        return snakeSize;
+    }
+
+    /**
+     * Sets size of snakehead. Default is 1.
+     * @param snakeSize
+     */
+    public void setSnakeSize(int snakeSize) {
+        this.snakeSize = snakeSize;
+    }
 
     /**
      * method to return the imageview
@@ -155,6 +170,9 @@ public class SnakeHead {
                 i--;
             }
         }
+
+        this.snakehead.setFitWidth(snakeSize * GameMap.UNIT_SIZE);
+        this.snakehead.setFitHeight(snakeSize * GameMap.UNIT_SIZE);
     }
 
     /**

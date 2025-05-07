@@ -34,4 +34,10 @@ public class Apple extends Food {
         return this.image;
     }
 
+
+    @Override
+    public void eat() {
+
+    }
+
 }
