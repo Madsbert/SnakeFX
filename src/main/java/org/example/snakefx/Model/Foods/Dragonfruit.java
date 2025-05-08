@@ -2,6 +2,7 @@ package org.example.snakefx.Model.Foods;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import org.example.snakefx.Controller.GameMap;
 import org.example.snakefx.Model.SnakeHead;
 
@@ -11,7 +12,6 @@ import org.example.snakefx.Model.SnakeHead;
 public class Dragonfruit extends Food {
     ImageView image;
 
-
     public Dragonfruit(int positionX, int positionY) {
         super(positionX, positionY, 100);
         Image dragonImage = new Image(getClass().getResourceAsStream("/Pictures/Dragonfruit.png"));
@@ -20,7 +20,6 @@ public class Dragonfruit extends Food {
         this.image.setFitHeight(GameMap.UNIT_SIZE);
         this.image.setX(positionX);
         this.image.setY(positionY);
-
     }
 
     @Override

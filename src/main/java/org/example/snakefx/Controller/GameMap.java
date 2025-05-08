@@ -135,7 +135,8 @@ public class GameMap extends Pane {
     {
         if (snakeHead.getLengthOfSnake() <= 0 )
         {
-            System.exit(0);
+            snakeHead.die();
+            gameTime.setModifier(0);
         }
         snakeHead.tick();
         snakeHead.move();
@@ -153,7 +154,7 @@ public class GameMap extends Pane {
         }
 
         gameTime.tick();
-        System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
+
         Runtime.getRuntime().gc();
     }
 
