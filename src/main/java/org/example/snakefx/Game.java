@@ -47,18 +47,19 @@ private GameMap gameMap;
      */
     public void startGame(Stage primaryStage) {
         this.gameMap = new GameMap();
-        Scene gameScene = new Scene(gameMap);
-        primaryStage.setResizable(false);
-        primaryStage.sizeToScene();
-        primaryStage.centerOnScreen();
-        primaryStage.setScene(gameScene);
-        primaryStage.setTitle("Snake");
-        primaryStage.show();
+            Scene gameScene = new Scene(gameMap);
+            primaryStage.setResizable(false);
+            primaryStage.sizeToScene();
+            primaryStage.centerOnScreen();
+            primaryStage.setScene(gameScene);
+            primaryStage.setTitle("Snake");
+            primaryStage.show();
 
-        gameMap.requestFocus();
-        gameMap.startGame(primaryStage, this);
+            gameMap.requestFocus();
+            gameMap.startGame(primaryStage, this);
 
-        gameScene.setOnKeyPressed(this::handleKeyPress);
+            gameScene.setOnKeyPressed(this::handleKeyPress);
+
     }
 
     /**

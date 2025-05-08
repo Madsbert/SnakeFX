@@ -3,8 +3,6 @@ package org.example.snakefx.Model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import org.example.snakefx.Controller.GameMap;
 
 import java.util.Objects;

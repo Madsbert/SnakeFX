@@ -22,8 +22,8 @@ public class RulesMenu extends StackPane {
         vbox.setStyle("-fx-background-color: linear-gradient(to bottom, #202020, #3a3a3a);");
 
         Label rulesLabel = new Label("📜 Spillets Regler:\n\n- Brug piletasterne til at styre slangen.\n- Undgå væggen og dig selv." +
-                "\n- Spis maden for at vokse.\n- Dragefrugter øger spillets hastighed og giver 3point.\n- Spiser man en mursten mister man 3 point og slangen bevæger sig langsommere." +
-                "\n- Hvis du spiser en hash plante drejer skærmen! \n-x frugt gør slangens hoved større \n\nHeld og lykke!");
+                "\n- Spis maden for at vokse.\n- Dragefrugter øger spillets hastighed, gør slangens hoved større og giver 3point.\n- Spiser man en mursten mister man 3 point og slangen bevæger sig langsommere." +
+                "\n- Hvis du spiser en hash plante drejer skærmen!  \n\nHeld og lykke!");
         rulesLabel.setFont(new Font("Arial", 20));
         rulesLabel.setStyle("-fx-text-fill: white; -fx-alignment: center; -fx-padding: 20;");
 

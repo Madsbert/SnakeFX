@@ -22,7 +22,7 @@ public class Score {
 
     /**
      * gets the score and sets the text
-     * @param snakeHead
+     * @param snakeHead a snakehead
      */
     public void tick(SnakeHead snakeHead)
     {
