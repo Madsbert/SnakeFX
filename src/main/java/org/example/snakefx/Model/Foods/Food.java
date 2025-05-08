@@ -1,6 +1,8 @@
 package org.example.snakefx.Model.Foods;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
+import org.example.snakefx.Controller.GameMap;
 
 import java.util.List;
 
@@ -11,13 +13,14 @@ public abstract class Food {
     int positionX;
     int positionY;
     int foodValue;
-    public int lifetime = 35;
+    public int lifetime = 75;
+    public Rectangle rect;
 
     public Food(int positionX, int positionY, int foodValue ) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.foodValue = foodValue;
-
+        rect = new Rectangle(positionX, positionY, GameMap.UNIT_SIZE, GameMap.UNIT_SIZE);
     }
 
     public void tick()

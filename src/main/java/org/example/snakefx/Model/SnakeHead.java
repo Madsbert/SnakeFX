@@ -2,17 +2,14 @@ package org.example.snakefx.Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 import org.example.snakefx.Controller.GameMap;
-import org.example.snakefx.Game;
 
 import java.util.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static javafx.scene.paint.Color.RED;
 
 /**
  * class to create a snakehead and handle its methods
@@ -22,13 +19,13 @@ public class SnakeHead {
     int lengthOfSnake;
     int snakeHeadPositionX;
     int snakeHeadPositionY;
-    private int snakeSize = 1;
+    private float snakeSize = 1;
     private ImageView snakehead;
     private final Rotate rotate;
     private List<SnakePart> snakeParts;
     public Object parent;
     private Runnable onDeath;
-
+    public Rectangle rect;
 
     public SnakeHead(Direction direction, int lengthOfSnake, int x, int y) {
         this.direction = direction;
@@ -36,6 +33,7 @@ public class SnakeHead {
         this.snakeHeadPositionX = x;
         this.snakeHeadPositionY = y;
 
+        rect = new Rectangle(snakeHeadPositionX, snakeHeadPositionY, snakeSize * GameMap.UNIT_SIZE, snakeSize * GameMap.UNIT_SIZE);
 
         Image snakeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/Snakehead.png")));
         this.snakehead = new ImageView(snakeImage);
@@ -52,7 +50,7 @@ public class SnakeHead {
      * Gets size of snakehead. Default is 1.
      * @return
      */
-    public int getSnakeSize() {
+    public float getSnakeSize() {
         return snakeSize;
     }
 
@@ -60,8 +58,15 @@ public class SnakeHead {
      * Sets size of snakehead. Default is 1.
      * @param snakeSize
      */
-    public void setSnakeSize(int snakeSize) {
-        this.snakeSize = snakeSize;
+    public void increaseSnakeSize(float snakeSize) {
+        if (this.snakeSize + snakeSize >= 2.25f)
+        {
+            this.snakeSize = 2.25f;
+        }
+        else
+        {
+            this.snakeSize += snakeSize;
+        }
     }
 
     /**
@@ -149,8 +154,39 @@ public class SnakeHead {
         }
 
         // Sæt ny position
-        snakehead.setX(snakeHeadPositionX);
-        snakehead.setY(snakeHeadPositionY);
+
+        this.snakehead.setFitWidth(GameMap.UNIT_SIZE * snakeSize);
+        this.snakehead.setFitHeight(GameMap.UNIT_SIZE * snakeSize);
+        this.snakehead.setScaleX(snakeSize);
+        this.snakehead.setScaleY(snakeSize);
+
+        if (snakeSize == 1)
+        {
+            this.snakehead.setX(snakeHeadPositionX);
+            this.snakehead.setY(snakeHeadPositionY);
+        }
+        else
+        {
+            this.snakehead.setX(snakeHeadPositionX - (GameMap.UNIT_SIZE * (snakeSize - 1))/2);
+            this.snakehead.setY(snakeHeadPositionY - (GameMap.UNIT_SIZE * (snakeSize - 1))/2);
+        }
+
+
+        rect.setWidth(GameMap.UNIT_SIZE * snakeSize);
+        rect.setHeight(GameMap.UNIT_SIZE * snakeSize);
+        rect.setScaleX(snakeSize);
+        rect.setScaleY(snakeSize);
+        if (snakeSize == 1)
+        {
+            rect.setX(snakeHeadPositionX);
+            rect.setY(snakeHeadPositionY);
+        }
+        else
+        {
+            rect.setX(snakeHeadPositionX - (GameMap.UNIT_SIZE * (snakeSize - 1))/2);
+            rect.setY(snakeHeadPositionY - (GameMap.UNIT_SIZE * (snakeSize - 1))/2);
+        }
+
     }
 
     /**
@@ -170,9 +206,6 @@ public class SnakeHead {
                 i--;
             }
         }
-
-        this.snakehead.setFitWidth(snakeSize * GameMap.UNIT_SIZE);
-        this.snakehead.setFitHeight(snakeSize * GameMap.UNIT_SIZE);
     }
 
     /**
@@ -206,6 +239,10 @@ public class SnakeHead {
         if (onDeath != null) {
             onDeath.run();
         }
+    }
+
+    public ImageView getImageView() {
+        return snakehead;
     }
 }
 

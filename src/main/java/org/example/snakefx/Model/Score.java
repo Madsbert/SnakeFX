@@ -11,9 +11,9 @@ public class Score {
     private int score;
     private final Text SCORE_TEXT = new Text();
 
-    public Score(int score) {
+    public Score() {
 
-        this.score = score;
+        this.score = 0;
         SCORE_TEXT.setText("Score: " + score);
         SCORE_TEXT.setFont(Font.font("Comic Sans MS", 20));
         SCORE_TEXT.setX(20);

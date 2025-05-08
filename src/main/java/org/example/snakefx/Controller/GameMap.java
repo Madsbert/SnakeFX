@@ -1,23 +1,17 @@
 package org.example.snakefx.Controller;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -104,9 +98,9 @@ public class GameMap extends Pane {
     public void startGame(Stage stage, Game game) {
         isRunning = true;
         draw();
+        initScore();
         spawnSnake(stage, game);
         spawnFood(fruitsToSpawn);
-        initScore();
         initGameSpeed();
     }
 
@@ -116,6 +110,7 @@ public class GameMap extends Pane {
     private void spawnSnake(Stage stage, Game game) {
         snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10);
         this.getChildren().add(snakeHead.getNode());
+
         snakeHead.parent = this;
         snakeHead.setOnDeath(()->{
             Platform.runLater(()->{
@@ -148,7 +143,9 @@ public class GameMap extends Pane {
             foods.get(i).tick();
             if (foods.get(i).lifetime <= 0)
             {
+                getChildren().remove(foods.get(i).getImage());
                 foods.remove(i);
+                spawnFood(1);
                 i--;
             }
         }
@@ -162,7 +159,8 @@ public class GameMap extends Pane {
      *Spawns the food on the map
      * @param fruitsToSpawn how many fruits that should be on the map
      */
-    private void spawnFood(int fruitsToSpawn) {
+    private void spawnFood(int fruitsToSpawn)
+    {
 
 
         for (int i = 0; i < fruitsToSpawn; i++) {
@@ -189,15 +187,23 @@ public class GameMap extends Pane {
                         random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
-            else if (chance <= 95) {
-                food = new Weed(
+            else if (chance <= 98) {
+                food = new Dragonfruit(
                         random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
             else {
-                food = new Dragonfruit(
-                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+                if (score.getScore() <= 25)
+                {
+                    food = new Weed(
+                            random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                            random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+                }
+                else
+                {
+                    spawnFood(1);
+                    return;
+                }
 
             }
 
@@ -234,10 +240,7 @@ public class GameMap extends Pane {
                     this.getChildren().add(food.getImage());
                     foods.add(food);
                 }
-
             }
-
-
             }
         }
 
@@ -255,7 +258,7 @@ public class GameMap extends Pane {
      * initializing score text
      */
     public void initScore() {
-        score = new Score(snakeHead.getLengthOfSnake()-3);
+        score = new Score();
         this.getChildren().add(score.getNode());
     }
 
@@ -271,24 +274,18 @@ public class GameMap extends Pane {
      * method to eat the fruit and changes game speed according to the fruits eaten
      */
     public void checkIfSnakeIsOnTopOfFoodAndIsHellaHungry() {
-        int sx = snakeHead.getSnakeHeadPositionX();
-        int sy = snakeHead.getSnakeHeadPositionY();
-
         for (int i = 0; i < foods.size(); i++) {
-            int fx = foods.get(i).getPositionX();
-            int fy = foods.get(i).getPositionY();
 
-            int diffX = Math.abs(sx - fx);
-            int diffY = Math.abs(sy - fy);
+            if (snakeHead.rect.contains(new Point2D(foods.get(i).getPositionX() - (double) GAME_UNITS /2,
+                    foods.get(i).getPositionY() - (double) GAME_UNITS /2)) || snakeHead.rect.getBoundsInParent().contains(foods.get(i).rect.getBoundsInParent()))
+            {
 
-            if (diffX <= (snakeHead.getSnakeSize() * UNIT_SIZE)/2 + 5 && diffY <= (snakeHead.getSnakeSize() * UNIT_SIZE)/2 + 5) {
-                System.out.println(diffX + ", " + diffY);
                 if (foods.get(i).getClass() == Dragonfruit.class) {
 
-                    foods.get(i).eat();
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(3);
+                    snakeHead.increaseSnakeSize(0.25f);
                     spawnFood(2);
 
                     // replaces gamespeed
