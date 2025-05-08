@@ -130,7 +130,7 @@ public class GameMap extends Pane {
      */
     public void update()
     {
-        if (snakeHead.getLengthOfSnake() <= 0 )
+        if (snakeHead.getLengthOfSnake() <= 2 )
         {
             snakeHead.die();
             gameTime.setModifier(0);
@@ -145,6 +145,10 @@ public class GameMap extends Pane {
             foods.get(i).tick();
             if (foods.get(i).lifetime <= 0)
             {
+                if (foods.get(i).getClass() == Brick.class)
+                {
+                    amountOfBricks--;
+                }
                 getChildren().remove(foods.get(i).getImage());
                 foods.remove(i);
                 spawnFood(1);
