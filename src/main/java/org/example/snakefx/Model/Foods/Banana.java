@@ -20,6 +20,10 @@ public class Banana extends Food {
     }
 
 
+    @Override
+    public void eat() {
+    }
+
     /**
      * method to return the imageview
      * @return an imageview

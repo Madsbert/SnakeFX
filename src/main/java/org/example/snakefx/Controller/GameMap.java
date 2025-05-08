@@ -1,6 +1,7 @@
 package org.example.snakefx.Controller;
 
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -28,7 +29,7 @@ public class GameMap extends Pane {
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
     boolean isRunning = false;
-    private SnakeHead snakeHead;
+    private static SnakeHead snakeHead;
     private List<Food> foods = new ArrayList<>();
     int fruitsToSpawn = 10;
     int amountOfBricks = 0;
@@ -49,6 +50,10 @@ public class GameMap extends Pane {
 
         // Set preferred size for proper layout
         this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+
+    public static SnakeHead getSnakeHead() {
+        return snakeHead;
     }
 
     /**
@@ -95,9 +100,9 @@ public class GameMap extends Pane {
     public void startGame(Stage stage, Game game) {
         isRunning = true;
         draw();
+        initScore();
         spawnSnake(stage, game);
         spawnFood(fruitsToSpawn);
-        initScore();
         initGameSpeed();
     }
 
@@ -107,6 +112,7 @@ public class GameMap extends Pane {
     private void spawnSnake(Stage stage, Game game) {
         snakeHead = new SnakeHead(Direction.Left, 3,UNIT_SIZE*10,UNIT_SIZE*10);
         this.getChildren().add(snakeHead.getNode());
+
         snakeHead.parent = this;
         snakeHead.setOnDeath(()->{
             Platform.runLater(()->{
@@ -126,7 +132,8 @@ public class GameMap extends Pane {
     {
         if (snakeHead.getLengthOfSnake() <= 0 )
         {
-            System.exit(0);
+            snakeHead.die();
+            gameTime.setModifier(0);
         }
         snakeHead.tick();
         snakeHead.move();
@@ -134,8 +141,19 @@ public class GameMap extends Pane {
         score.tick(snakeHead);
         freeToMove = true;
 
+        for (int i = 0; i < foods.size(); i++) {
+            foods.get(i).tick();
+            if (foods.get(i).lifetime <= 0)
+            {
+                getChildren().remove(foods.get(i).getImage());
+                foods.remove(i);
+                spawnFood(1);
+                i--;
+            }
+        }
+
         gameTime.tick();
-        System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
+
         Runtime.getRuntime().gc();
 
         if (weedPlantsEaten == 1){
@@ -152,7 +170,8 @@ public class GameMap extends Pane {
      *Spawns the food on the map
      * @param fruitsToSpawn how many fruits that should be on the map
      */
-    private void spawnFood(int fruitsToSpawn) {
+    private void spawnFood(int fruitsToSpawn)
+    {
 
 
         for (int i = 0; i < fruitsToSpawn; i++) {
@@ -179,15 +198,23 @@ public class GameMap extends Pane {
                         random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
-            else if (chance <= 95) {
-                food = new Weed(
+            else if (chance <= 98) {
+                food = new Dragonfruit(
                         random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
             else {
-                food = new Dragonfruit(
-                        random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
-                        random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+                if (score.getScore() <= 25)
+                {
+                    food = new Weed(
+                            random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
+                            random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
+                }
+                else
+                {
+                    spawnFood(1);
+                    return;
+                }
 
             }
 
@@ -224,10 +251,7 @@ public class GameMap extends Pane {
                     this.getChildren().add(food.getImage());
                     foods.add(food);
                 }
-
             }
-
-
             }
         }
 
@@ -245,7 +269,7 @@ public class GameMap extends Pane {
      * initializing score text
      */
     public void initScore() {
-        score = new Score(snakeHead.getLengthOfSnake()-3);
+        score = new Score();
         this.getChildren().add(score.getNode());
     }
 
@@ -261,20 +285,18 @@ public class GameMap extends Pane {
      * method to eat the fruit and changes game speed according to the fruits eaten
      */
     public void checkIfSnakeIsOnTopOfFoodAndIsHellaHungry() {
-        int sx = snakeHead.getSnakeHeadPositionX();
-        int sy = snakeHead.getSnakeHeadPositionY();
-
         for (int i = 0; i < foods.size(); i++) {
-            int fx = foods.get(i).getPositionX();
-            int fy = foods.get(i).getPositionY();
 
-            if (sx == fx && sy == fy) {
+            if (snakeHead.rect.contains(new Point2D(foods.get(i).getPositionX() - (double) GAME_UNITS /2,
+                    foods.get(i).getPositionY() - (double) GAME_UNITS /2)) || snakeHead.rect.getBoundsInParent().contains(foods.get(i).rect.getBoundsInParent()))
+            {
 
                 if (foods.get(i).getClass() == Dragonfruit.class) {
 
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     snakeHead.addToLengthOfSnake(3);
+                    snakeHead.increaseSnakeSize(0.25f);
                     spawnFood(2);
 
                     // replaces gamespeed
