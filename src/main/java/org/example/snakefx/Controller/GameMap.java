@@ -73,9 +73,9 @@ public class GameMap extends Pane {
         tileImages.add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Pictures/FloorTiles/DirtTile9.png.png"))));
 
         int amountOfTilesWidth = SCREEN_WIDTH / UNIT_SIZE;
-        int amountOfTilesHight = SCREEN_HEIGHT / UNIT_SIZE;
+        int amountOfTilesHeight = SCREEN_HEIGHT / UNIT_SIZE;
 
-        for (int row = 0; row < amountOfTilesHight; row++) {
+        for (int row = 0; row < amountOfTilesHeight; row++) {
             for (int col = 0; col < amountOfTilesWidth; col++) {
 
                 //create imageview from list of images, randomly

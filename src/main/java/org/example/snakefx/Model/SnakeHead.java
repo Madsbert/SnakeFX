@@ -15,7 +15,7 @@ import java.util.List;
  * class to create a snakehead and handle its methods
  */
 public class SnakeHead {
-    Direction direction = null;
+    Direction direction;
     int lengthOfSnake;
     int snakeHeadPositionX;
     int snakeHeadPositionY;
@@ -48,7 +48,7 @@ public class SnakeHead {
 
     /**
      * Gets size of snakehead. Default is 1.
-     * @return
+     * @return the snakesize
      */
     public float getSnakeSize() {
         return snakeSize;
@@ -56,7 +56,7 @@ public class SnakeHead {
 
     /**
      * Sets size of snakehead. Default is 1.
-     * @param snakeSize
+     * @param snakeSize the length of the snake
      */
     public void increaseSnakeSize(float snakeSize) {
         if (this.snakeSize + snakeSize >= 2.25f)

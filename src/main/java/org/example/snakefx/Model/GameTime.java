@@ -62,7 +62,7 @@ public class GameTime {
 
     /**
      * set the time modifier
-     * @param modifier
+     * @param modifier the time modifier
      */
     public void setModifier(float modifier) {
         timeModifier = modifier;
