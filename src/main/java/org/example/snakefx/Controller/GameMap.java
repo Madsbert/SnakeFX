@@ -1,23 +1,16 @@
 package org.example.snakefx.Controller;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +32,8 @@ public class GameMap extends Pane {
     private List<Food> foods = new ArrayList<>();
     int fruitsToSpawn = 10;
     int amountOfBricks = 0;
+    int weedPlantsEaten = 0;
+    int ticks;
     public boolean freeToMove = true;
     private Score score;
     public GameTime gameTime;
@@ -142,6 +137,15 @@ public class GameMap extends Pane {
         gameTime.tick();
         System.out.println(((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024) + " KB");
         Runtime.getRuntime().gc();
+
+        if (weedPlantsEaten == 1){
+            ticks++;
+            if (ticks == 30){
+                this.setRotate((this.getRotate() - 90) % 360);
+                ticks = 0;
+                weedPlantsEaten = 0;
+            }
+        }
     }
 
     /**
@@ -288,6 +292,7 @@ public class GameMap extends Pane {
                 }
 
                 if (foods.get(i).getClass() == Weed.class) {
+                    weedPlantsEaten++;
                     getChildren().remove(foods.get(i).getImage());
                     foods.remove(foods.get(i));
                     spawnFood(1);
@@ -301,6 +306,8 @@ public class GameMap extends Pane {
                     // Reposition the canvas to keep it centered
                     canvas.setTranslateX((SCREEN_WIDTH - canvas.getHeight()) / 2);
                     canvas.setTranslateY((SCREEN_HEIGHT - canvas.getWidth()) / 2);
+
+
 
                 }
 

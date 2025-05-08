@@ -1,9 +1,8 @@
-package org.example.snakefx.Model;
+package org.example.snakefx.Model.Foods;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.snakefx.Controller.GameMap;
-import org.example.snakefx.Model.Foods.Food;
 
 public class Weed extends Food {
     ImageView image;
