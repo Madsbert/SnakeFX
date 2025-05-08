@@ -12,10 +12,18 @@ import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 /**
  * class which sets up the game
@@ -208,7 +216,7 @@ public class GameMap extends Pane {
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
             else {
-                if (score.getScore() >= 25)
+                if (score.getScore() >= 5)
                 {
                     food = new Weed(
                             random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
@@ -333,6 +341,8 @@ public class GameMap extends Pane {
                     canvas.setTranslateX((SCREEN_WIDTH - canvas.getHeight()) / 2);
                     canvas.setTranslateY((SCREEN_HEIGHT - canvas.getWidth()) / 2);
 
+                    //play soundeffect
+                    soundEffectPowerDown();
 
 
                 }
@@ -349,6 +359,21 @@ public class GameMap extends Pane {
             }
         }
     }
+    public void soundEffectPowerDown() {
+        try {
 
+
+            String soundPath = Objects.requireNonNull(getClass().getResource("/Sounds/Test.mp3")).toString();
+            Media sound = new Media(soundPath);
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setVolume(1);
+
+            System.out.println("Play Sound Effect");
+            mediaPlayer.play();
+
+        } catch (Exception e) {
+            System.err.println("Error playing sound: " + e.getMessage());
+        }
+    }
 
 }
