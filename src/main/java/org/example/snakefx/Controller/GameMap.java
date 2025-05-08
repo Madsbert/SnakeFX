@@ -17,6 +17,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,6 +51,8 @@ public class GameMap extends Pane {
     public Random random = new Random();
     private Canvas canvas;
     private GraphicsContext gc;
+    private final Media soundEffect;
+    private MediaPlayer soundPlayer;
 
     public GameMap() {
         canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -58,6 +61,8 @@ public class GameMap extends Pane {
 
         // Set preferred size for proper layout
         this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        soundEffect = new Media(getClass().getResource("/Sounds/PowerDownSoundEffect.wav").toString());
     }
 
     public static SnakeHead getSnakeHead() {
@@ -112,6 +117,7 @@ public class GameMap extends Pane {
         spawnSnake(stage, game);
         spawnFood(fruitsToSpawn);
         initGameSpeed();
+
     }
 
     /**
@@ -360,20 +366,12 @@ public class GameMap extends Pane {
         }
     }
     public void soundEffectPowerDown() {
-        try {
-
-
-            String soundPath = Objects.requireNonNull(getClass().getResource("/Sounds/Test.mp3")).toString();
-            Media sound = new Media(soundPath);
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setVolume(1);
-
-            System.out.println("Play Sound Effect");
-            mediaPlayer.play();
-
-        } catch (Exception e) {
-            System.err.println("Error playing sound: " + e.getMessage());
-        }
+        Platform.runLater(() -> {
+            if (soundPlayer != null) soundPlayer.dispose();
+            soundPlayer = new MediaPlayer(soundEffect);
+            soundPlayer.setVolume(1.0);
+            soundPlayer.play();
+        });
     }
 
 }
