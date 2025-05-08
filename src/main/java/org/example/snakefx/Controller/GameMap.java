@@ -12,10 +12,19 @@ import org.example.snakefx.Game;
 import org.example.snakefx.Model.*;
 import org.example.snakefx.Model.Foods.*;
 
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 /**
  * class which sets up the game
@@ -42,6 +51,8 @@ public class GameMap extends Pane {
     public Random random = new Random();
     private Canvas canvas;
     private GraphicsContext gc;
+    private final Media soundEffect;
+    private MediaPlayer soundPlayer;
 
     public GameMap() {
         canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -50,6 +61,8 @@ public class GameMap extends Pane {
 
         // Set preferred size for proper layout
         this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        soundEffect = new Media(getClass().getResource("/Sounds/PowerDownSoundEffect.wav").toString());
     }
 
     public static SnakeHead getSnakeHead() {
@@ -104,6 +117,7 @@ public class GameMap extends Pane {
         spawnSnake(stage, game);
         spawnFood(fruitsToSpawn);
         initGameSpeed();
+
     }
 
     /**
@@ -208,7 +222,7 @@ public class GameMap extends Pane {
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
             else {
-                if (score.getScore() >= 25)
+                if (score.getScore() >= 5)
                 {
                     food = new Weed(
                             random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
@@ -333,6 +347,8 @@ public class GameMap extends Pane {
                     canvas.setTranslateX((SCREEN_WIDTH - canvas.getHeight()) / 2);
                     canvas.setTranslateY((SCREEN_HEIGHT - canvas.getWidth()) / 2);
 
+                    //play soundeffect
+                    soundEffectPowerDown();
 
 
                 }
@@ -349,6 +365,13 @@ public class GameMap extends Pane {
             }
         }
     }
-
+    public void soundEffectPowerDown() {
+        Platform.runLater(() -> {
+            if (soundPlayer != null) soundPlayer.dispose();
+            soundPlayer = new MediaPlayer(soundEffect);
+            soundPlayer.setVolume(1.0);
+            soundPlayer.play();
+        });
+    }
 
 }
