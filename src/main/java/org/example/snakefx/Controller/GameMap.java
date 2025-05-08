@@ -208,7 +208,7 @@ public class GameMap extends Pane {
                         random.nextInt(Math.round((float) SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE);
             }
             else {
-                if (score.getScore() <= 25)
+                if (score.getScore() >= 25)
                 {
                     food = new Weed(
                             random.nextInt(Math.round((float) SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE,
