@@ -19,11 +19,6 @@ public class Banana extends Food {
         this.image.setY(positionY);
     }
 
-
-    @Override
-    public void eat() {
-    }
-
     /**
      * method to return the imageview
      * @return an imageview

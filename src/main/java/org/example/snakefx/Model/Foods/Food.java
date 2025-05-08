@@ -27,8 +27,6 @@ public abstract class Food {
     {
         lifetime--;
     }
-
-    public abstract void eat();
     /**
      * method to return the imageview
      * @return an imageview

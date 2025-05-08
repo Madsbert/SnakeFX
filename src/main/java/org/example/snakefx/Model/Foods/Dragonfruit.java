@@ -21,12 +21,6 @@ public class Dragonfruit extends Food {
         this.image.setY(positionY);
     }
 
-    @Override
-    public void eat() {
-        SnakeHead snakeHead = GameMap.getSnakeHead();
-        snakeHead.increaseSnakeSize(snakeHead.getSnakeSize() + 1);
-    }
-
     /**
      * method to return the imageview
      * @return an imageview
